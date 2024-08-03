@@ -1,0 +1,17 @@
+﻿@model TC.Repository.Entity.User
+
+@{
+    ViewData["Title"] = "Уволить сотрудника";
+}
+
+<h3>
+    Вы действительно хотите уволить сотрудника @Html.DisplayFor(model => model.Name)?
+</h3>
+
+<div>
+    <form asp-action="Remove">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Уволить" class="btn btn-default" /> |
+        <a asp-action="ShowAll">Назад к списку</a>
+    </form>
+</div>

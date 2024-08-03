@@ -1,0 +1,33 @@
+﻿@model IEnumerable<TC.Repository.Entity.Priority>
+
+@{
+    ViewData["Title"] = "Список приоритетов";
+}
+
+<p>
+    <a asp-action="Add">Создать приоритет</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Level)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="list-selected">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Level)
+                </td>
+                <td>
+                    <a asp-action="Show" asp-route-id="@item.Id">Детали</a> |
+                    <a asp-action="Edit" asp-route-id="@item.Id">Редактировать</a> | 
+                    <a asp-action="Remove" asp-route-id="@item.Id">Удалить</a> 
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

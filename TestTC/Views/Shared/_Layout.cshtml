@@ -1,0 +1,93 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+	<title>@ViewBag.Title</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable@9.0.1/dist/handsontable.full.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/handsontable@9.0.1/dist/handsontable.full.min.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="~/assets/css/main.css" />
+</head>
+<body class="is-preload">
+
+	<!-- Wrapper -->
+	<div id="wrapper">
+
+		<!-- Main -->
+		<div id="main">
+			<div class="inner">
+
+				<!-- Header -->
+				<header id="header">
+					<p class="logo"><strong>@ViewBag.Title</strong></p>
+					<ul class="icons">
+						<p class="icon"></p>
+					</ul>
+				</header>
+
+				<!-- Content -->
+				<section>
+					@RenderBody()
+				</section>
+
+			</div>
+		</div>
+
+		<!-- Sidebar -->
+		<div id="sidebar">
+			<div class="inner">
+
+				<!-- Menu -->
+				<nav id="menu">
+					<header class="major">
+						<h2>Tasks</h2>
+					</header>
+					<ul>
+						<li><a asp-controller="Home" asp-action="Index">На главную</a></li>
+					</ul>
+					<ul>
+					<li>
+						<span class="opener">Приоритеты</span>
+						<ul>
+							<li><a asp-controller="Priority" asp-action="ShowAll">Просмотр</a></li>
+							<li><a asp-controller="Priority" asp-action="Add">Добавить</a></li>
+						</ul>
+						</li>
+					</ul>
+					<ul>
+						<li>
+							<span class="opener"> Пользователи</span>
+							<ul>
+								<li><a asp-controller="User" asp-action="Add">Добавить</a></li>
+								<li><a asp-controller="User" asp-action="ShowAll">Все пользоователи</a></li>
+							</ul>
+						</li>
+					</ul>
+					<ul>
+						<li>
+							<span class="opener"> Задачи</span>
+							<ul>
+								<li><a asp-controller="ToDoItem" asp-action="Add">Добавить</a></li>
+								<li><a asp-controller="ToDoItem" asp-action="ShowAll">Все задачи</a></li>
+							</ul>
+						</li>
+					</ul>
+				</nav>
+
+			</div>
+		</div>
+	</div>
+
+	<!-- Scripts -->
+	<script src="~/assets/js/jquery.min.js"></script>
+	<script src="~/assets/js/browser.min.js"></script>
+	<script src="~/assets/js/breakpoints.min.js"></script>
+	<script src="~/assets/js/util.js"></script>
+	<script src="~/assets/js/main.js"></script>
+
+	<!-- Footer -->
+	<footer id="footer">
+		<p class="copyright">&copy2024 - Test True Code </p>
+	</footer>
+</body>
+</html>
