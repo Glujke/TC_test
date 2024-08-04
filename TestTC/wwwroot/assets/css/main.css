@@ -2288,6 +2288,6 @@ button,
     min-height: 200px;
 }
 
-.validation-summary-errors > ul > li {
+.text-danger {
     color: red !important; 
 }

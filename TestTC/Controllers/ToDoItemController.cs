@@ -33,18 +33,28 @@ public class ToDoItemController : Controller
     [HttpPost]
     public async Task<IActionResult> Add([Bind("Title, Description, DueDate, UserId, PriorityId")] ToDoItem toDoItem)
     {
+        if (!ModelState.IsValid)
+        {
+            ModelState.AddModelError("",
+                    "Не все данные заполнены");
+            var users = await userRepository.GetAll;
+            var priorities = await priorityRepository.GetAll;
+            ViewData["UserId"] = new SelectList(users, "Id", "Name");
+            ViewData["PriorityId"] = new SelectList(priorities, "Id", "Level");
+            return View(toDoItem);
+        }
         if (toDoItem.DueDate < DateTime.Now)
         {
             ModelState.AddModelError("",
                     "Дата выполнения не может быть раньше текущей.");
+            var users = await userRepository.GetAll;
+            var priorities = await priorityRepository.GetAll;
+            ViewData["UserId"] = new SelectList(users, "Id", "Name");
+            ViewData["PriorityId"] = new SelectList(priorities, "Id", "Level");
             return View(toDoItem);
         }
-        if (ModelState.IsValid)
-        {
-            await toDoItemRepository.AddToDoItem(toDoItem);
-            return RedirectToAction(nameof(ShowAll));
-        }
-        return View("Error");
+        await toDoItemRepository.AddToDoItem(toDoItem);
+        return RedirectToAction(nameof(ShowAll));
     }
     public async Task<IActionResult> Edit(int id)
     {
@@ -61,20 +71,32 @@ public class ToDoItemController : Controller
     {
         if (id != toDoItem.Id)
         {
-            return NotFound();
+            ModelState.AddModelError("",
+                    "ID не совпадает.");
+            return View(toDoItem);
         }
-        if(toDoItem.DueDate < DateTime.Now) 
+        if (!ModelState.IsValid)
+        {
+            ModelState.AddModelError("",
+                    "Не все данные заполнены");
+            var users = await userRepository.GetAll;
+            var priorities = await priorityRepository.GetAll;
+            ViewData["UserId"] = new SelectList(users, "Id", "Name");
+            ViewData["PriorityId"] = new SelectList(priorities, "Id", "Level");
+            return View(toDoItem);
+        }
+        if (toDoItem.DueDate < DateTime.Now) 
         {
             ModelState.AddModelError("",
                     "Дата выполнения не может быть раньше текущей.");
+            var users = await userRepository.GetAll;
+            var priorities = await priorityRepository.GetAll;
+            ViewData["UserId"] = new SelectList(users, "Id", "Name");
+            ViewData["PriorityId"] = new SelectList(priorities, "Id", "Level");
             return View(toDoItem);
         }
-        if (ModelState.IsValid)
-        {
-            await toDoItemRepository.EditToDoItem(toDoItem);
-            return RedirectToAction(nameof(ShowAll));
-        }
-        return View("Error");
+        await toDoItemRepository.EditToDoItem(toDoItem);
+        return RedirectToAction(nameof(ShowAll));
     }
     public async Task<IActionResult> Show(int id)
     {

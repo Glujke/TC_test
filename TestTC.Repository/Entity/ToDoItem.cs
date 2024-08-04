@@ -34,4 +34,7 @@ public class ToDoItem
     [Display(Name = "Приоритет")]
     public int PriorityId { get; set; }
 
+    [NotMapped]
+    public string Date => DueDate.ToString("dd.MM.yyyy");
+
 }
