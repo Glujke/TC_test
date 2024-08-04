@@ -10,6 +10,7 @@ public class TestTCDbContext : DbContext
 
     public TestTCDbContext(DbContextOptions<TestTCDbContext> options) : base(options)
     {
+        Database.EnsureCreated();
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -25,6 +26,10 @@ public class TestTCDbContext : DbContext
             .HasOne(td => td.Priority)
             .WithMany(p => p.TodoItems)
             .HasForeignKey(td => td.PriorityId);
+
+        modelBuilder.Entity<Priority>()
+            .HasIndex(p => p.Level)
+            .IsUnique();
     }
 }
 

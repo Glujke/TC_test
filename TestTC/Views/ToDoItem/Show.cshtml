@@ -1,6 +1,30 @@
 ﻿@model TC.Repository.Entity.ToDoItem
 
 @{
-    ViewData["Title"] = "Добавление нового пользователя";
+    ViewData["Title"] = "Подробности";
 }
 
+
+<div class="description-container">
+<dl>
+    <h4>@Model.Title</h4>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <h3>
+            Исполнитель: @Html.DisplayFor(model => model.User.Name)
+        </h3>
+    </dl>
+    <dl class="dl-horizontal">
+
+        <h3>
+            Дата сдачи: @Html.DisplayFor(model => model.DueDate.Date)
+        </h3>
+    </dl>
+    <h3>Описание</h3>
+    <p class="description-field">@Model.Description</p>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a> |
+        <a asp-action="ShowAll">Назад к списку</a>
+    </div>
+</div>

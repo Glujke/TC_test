@@ -1,5 +1,61 @@
 ﻿@model IEnumerable<TC.Repository.Entity.ToDoItem>
 
 @{
-    ViewData["Title"] = "Список пользователей";
+    ViewData["Title"] = "Список задач";
 }
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Priority.Level)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DueDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsCompleted)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="list-selected">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Priority.Level)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DueDate)
+                </td>
+                <td> @if(item.IsCompleted){      
+                    <label class="control-label">Готова</label>
+                } else {
+                    <label class="control-label">Не готово</label>
+                }
+                    
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Редактировать</a> |
+                    <a asp-action="Show" asp-route-id="@item.Id">Открыть</a> |
+                    <a asp-action="Remove" asp-route-id="@item.Id">В архив</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p><a asp-action="User" asp-controller="ShowAll">Список исполнителей</a></p>

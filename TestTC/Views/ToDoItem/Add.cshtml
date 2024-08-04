@@ -1,7 +1,7 @@
 ﻿@model TC.Repository.Entity.ToDoItem
 
 @{
-    ViewData["Title"] = "Добавление задачи";
+    ViewData["Title"] = "Добавление новой задачи";
 }
 
 <div class="row">
@@ -15,7 +15,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
+                <textarea asp-for="Description" class="form-control" rows="10"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TC.Repository.Entity;
@@ -10,6 +11,7 @@ public class Priority
 
     [Display(Name = "Приоритет")]
     [Range(1,5)]
+    [Obsolete]
     public int Level { get; set; }
     public IEnumerable<ToDoItem>? TodoItems { get; set; } = null;
 }

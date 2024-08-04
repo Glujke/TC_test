@@ -12,8 +12,8 @@ using TC.Repository.Context;
 namespace TC.Repository.Migrations
 {
     [DbContext(typeof(TestTCDbContext))]
-    [Migration("20240711032904_nullablePriority")]
-    partial class nullablePriority
+    [Migration("20240804020648_UniquePriority")]
+    partial class UniquePriority
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace TC.Repository.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("TestTC.Repository.Entity.Priority", b =>
+            modelBuilder.Entity("TC.Repository.Entity.Priority", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -38,10 +38,13 @@ namespace TC.Repository.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Level")
+                        .IsUnique();
+
                     b.ToTable("Priorities");
                 });
 
-            modelBuilder.Entity("TestTC.Repository.Entity.TodoItem", b =>
+            modelBuilder.Entity("TC.Repository.Entity.ToDoItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -78,7 +81,7 @@ namespace TC.Repository.Migrations
                     b.ToTable("ToDoItems");
                 });
 
-            modelBuilder.Entity("TestTC.Repository.Entity.User", b =>
+            modelBuilder.Entity("TC.Repository.Entity.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -95,15 +98,15 @@ namespace TC.Repository.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("TestTC.Repository.Entity.TodoItem", b =>
+            modelBuilder.Entity("TC.Repository.Entity.ToDoItem", b =>
                 {
-                    b.HasOne("TestTC.Repository.Entity.Priority", "Priority")
+                    b.HasOne("TC.Repository.Entity.Priority", "Priority")
                         .WithMany("TodoItems")
                         .HasForeignKey("PriorityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TestTC.Repository.Entity.User", "User")
+                    b.HasOne("TC.Repository.Entity.User", "User")
                         .WithMany("TodoItems")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -114,12 +117,12 @@ namespace TC.Repository.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("TestTC.Repository.Entity.Priority", b =>
+            modelBuilder.Entity("TC.Repository.Entity.Priority", b =>
                 {
                     b.Navigation("TodoItems");
                 });
 
-            modelBuilder.Entity("TestTC.Repository.Entity.User", b =>
+            modelBuilder.Entity("TC.Repository.Entity.User", b =>
                 {
                     b.Navigation("TodoItems");
                 });
