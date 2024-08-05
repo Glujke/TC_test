@@ -4,15 +4,11 @@ using System;
 using TC.Repository.Abstract;
 using TC.Repository.Entity;
 using TC.Repository.Implementation;
+using TestTC.Repository.Enums;
+using TestTC.Repository.Filters;
 
 namespace TC.Controllers;
 
-public enum MoreEqualsLess
-{
-    Less,
-    Equals,
-    More
-}
 
 public class ToDoItemController : Controller
 {
@@ -118,12 +114,22 @@ public class ToDoItemController : Controller
         ViewBag.PrioritiesList = new SelectList(priorities, "Id", "Level");
         return View((ToDoItems: res, Priorities: priorities));
     }
+    public async Task<IActionResult> ShowWithFilter((IEnumerable<ToDoItem> toDoItems, IEnumerable<Priority> priority) result)
+    {
+        var priorities = await priorityRepository.GetAll;
+        ViewBag.PrioritiesList = new SelectList(priorities, "Id", "Level");
+        return View((ToDoItems: result.toDoItems, Priorities: priorities));
+    }
 
     [HttpPost]
-    public async Task<IActionResult> ShowWithFilter(DateTime? dueDate, MoreEqualsLess? moreEqualsLessDueDate, int? idPriority, MoreEqualsLess? moreEqualsLessPriority)
+    public async Task<IActionResult> ShowWithFilter(DateTime? dueDate, MoreEqualsLess moreEqualsLessDueDate,
+        int? idPriority, MoreEqualsLess moreEqualsLessPriority, bool isReady)
     {
-        var res = await toDoItemRepository.GetAll;
-        return View(res);
+        var filter = new Filter(dueDate, moreEqualsLessDueDate, idPriority, moreEqualsLessPriority, isReady);
+        var res = await toDoItemRepository.GetFromFilter(filter);
+        var priorities = await priorityRepository.GetAll;
+
+        return View((res, priorities));
     }
 
 }

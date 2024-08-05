@@ -2,6 +2,9 @@
 using TC.Repository.Abstract;
 using TC.Repository.Context;
 using TC.Repository.Entity;
+using TestTC.Repository.Enums;
+using TestTC.Repository.Filters;
+using System.Linq;
 
 namespace TC.Repository.Implementation;
 
@@ -53,4 +56,48 @@ public class ToDoItemRepository : IToDoItemRepository
         mainContext.Remove(toDoItem);
         await mainContext.SaveChangesAsync();
     }
+
+    public async Task<IEnumerable<ToDoItem>> GetFromFilter(Filter filter)
+    {
+        var result = await GetAll;
+        if (filter.Date == null && filter.priorityId == null && filter.IsReady == null) return result;
+        if(filter.Date != null)
+        {
+            DateTime dateOnly = filter.Date.Value.Date;
+            switch (filter.moreLessEqualsDate)
+            {
+                case MoreEqualsLess.Equals:
+                    result = result.Where(td => td.DueDate.Date == dateOnly);
+                    break;
+                case MoreEqualsLess.More:
+                    result = result.Where(td => td.DueDate.Date >= dateOnly);
+                    break;
+                case MoreEqualsLess.Less:
+                    result = result.Where(td => td.DueDate.Date <= dateOnly);
+                    break;
+            }
+        }
+        if(filter.priorityId != null)
+        {
+            switch (filter.moreLessEqualsDate)
+            {
+                case MoreEqualsLess.Equals:
+                    result = result.Where(td => td.PriorityId == filter.priorityId);
+                    break;
+                case MoreEqualsLess.More:
+                    result = result.Where(td => td.PriorityId >= filter.priorityId);
+                    break;
+                case MoreEqualsLess.Less:
+                    result = result.Where(td => td.PriorityId <= filter.priorityId);
+                    break;
+            }
+        } 
+        if(filter.IsReady != null)
+        {
+            result = result.Where(td => td.IsCompleted== filter.IsReady);
+        }
+        return result;
+    }
+
+
 }

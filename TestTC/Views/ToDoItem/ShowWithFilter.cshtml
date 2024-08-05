@@ -4,37 +4,8 @@
     ViewData["Title"] = "Список задач";
 }
 <script src="~/assets/js/tableRowClick.js"></script>
-
-<script>
-function toggleFilter() {
-    var filterContainer = document.getElementById('filterContainer');
-    var filterButton = document.getElementById('filterButton');
-    
-    if (filterContainer.style.display === "none") {
-        filterContainer.style.display = "block";
-        filterButton.textContent = "Скрыть фильтр";
-    } else {
-        filterContainer.style.display = "none";
-        filterButton.textContent = "Показать фильтр";
-    }
-}
-</script>
-
-<script>
-    window.onload = function() {
-    var filterContainer = document.getElementById('filterContainer');
-    var filterContainer = document.getElementById('filterContainer');
-    var filterButton = document.getElementById('filterButton');
-    
-    if (filterContainer.style.display === "none") {
-        filterButton.textContent = "Показать фильтр";
-    } else {
-        filterButton.textContent = "Скрыть фильтр";
-    }
-    
-    filterButton.onclick = toggleFilter;
-};
-</script>
+<script src="~/assets/js/toggleFilter.js"></script>
+<script src="~/assets/js/filterButton.js"></script>
 
 <form asp-action="ShowWithFilter" method="post">
     <button type="button" id="filterButton">Показать фильтр</button>
@@ -56,10 +27,11 @@ function toggleFilter() {
                 <option value="" selected>Выберите приоритет</option>
             </select>
             <select name="moreEqualLessPriority" id="moreEqualLessPriority" class="form-control">
-                <option value="Equals">Равно</option>
+                <option value="equals">Равно</option>
                 <option value="More">Больше</option>
                 <option value="Less">Меньше</option>
             </select>
+        </div>
         <div class="form-group">
             <label for="isReady">Готовность:</label>
             <select name="isReady" id="isReady" class="form-control">
@@ -68,7 +40,6 @@ function toggleFilter() {
             <option value="False">Не готово</option>
             </select>
          </div>
-        </div>
     </div>
 </form>
 
@@ -121,4 +92,4 @@ function toggleFilter() {
     </tbody>
 </table>
 
-<p><a asp-action="User" asp-controller="ShowAll">Список исполнителей</a></p>
+<p><a asp-action="ShowAll" asp-controller="User">Список исполнителей</a></p>

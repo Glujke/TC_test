@@ -1,4 +1,5 @@
 ﻿using TC.Repository.Entity;
+using TestTC.Repository.Filters;
 
 namespace TC.Repository.Abstract;
 
@@ -11,4 +12,5 @@ public interface IToDoItemRepository
     Task RemoveToDoItem(int id);
     Task<ToDoItem> GetToDoItem(int id);
     Task<IEnumerable<ToDoItem>> GetAll { get; }
+    Task<IEnumerable<ToDoItem>> GetFromFilter(Filter filter);
 }
