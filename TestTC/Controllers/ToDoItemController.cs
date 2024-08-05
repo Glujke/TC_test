@@ -7,6 +7,13 @@ using TC.Repository.Implementation;
 
 namespace TC.Controllers;
 
+public enum MoreEqualsLess
+{
+    Less,
+    Equals,
+    More
+}
+
 public class ToDoItemController : Controller
 {
     private readonly IToDoItemRepository toDoItemRepository;
@@ -105,6 +112,15 @@ public class ToDoItemController : Controller
     }
 
     public async Task<IActionResult> ShowAll()
+    {
+        var res = await toDoItemRepository.GetAll;
+        var priorities = await priorityRepository.GetAll; 
+        ViewBag.PrioritiesList = new SelectList(priorities, "Id", "Level");
+        return View((ToDoItems: res, Priorities: priorities));
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ShowWithFilter(DateTime? dueDate, MoreEqualsLess? moreEqualsLessDueDate, int? idPriority, MoreEqualsLess? moreEqualsLessPriority)
     {
         var res = await toDoItemRepository.GetAll;
         return View(res);

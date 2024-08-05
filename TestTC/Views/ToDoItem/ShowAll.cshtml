@@ -1,35 +1,90 @@
-﻿@model IEnumerable<TC.Repository.Entity.ToDoItem>
+﻿@model (IEnumerable<TC.Repository.Entity.ToDoItem>, IEnumerable<TC.Repository.Entity.Priority>)
 
 @{
     ViewData["Title"] = "Список задач";
 }
 <script src="~/assets/js/tableRowClick.js"></script>
 
+<script>
+function toggleFilter() {
+    var filterContainer = document.getElementById('filterContainer');
+    var filterButton = document.getElementById('filterButton');
+    
+    if (filterContainer.style.display === "none") {
+        filterContainer.style.display = "block";
+        filterButton.textContent = "Скрыть фильтр";
+    } else {
+        filterContainer.style.display = "none";
+        filterButton.textContent = "Показать фильтр";
+    }
+}
+</script>
+
+<script>
+window.onload = function() {
+    var filterContainer = document.getElementById('filterContainer');
+    var filterButton = document.getElementById('filterButton');
+    
+    if (filterContainer.style.display === "none") {
+        filterButton.textContent = "Показать фильтр";
+    } else {
+        filterButton.textContent = "Скрыть фильтр";
+    }
+    
+    filterButton.onclick = toggleFilter;
+};
+</script>
+
+<form asp-action="ShowWithFilter" method="post">
+    <button type="button" id="filterButton">Показать фильтр</button>
+    <button type="submit">Применить фильтр</button>
+    <button type="reset">Очистить фильтр</button>
+    <div id="filterContainer" style="display:none;">
+        <div class="form-group">
+            <label for="dueDate">Дата:</label>
+            <input type="datetime-local" name="dueDate" id="dueDate" class="form-control" />
+            <select name="moreEqualsLessDueDate" id="moreEqualsLessDueDate" class="form-control">
+                <option value="equals">Равно</option>
+                <option value="greaterThan">Больше</option>
+                <option value="lessThan">Меньше</option>
+            </select>
+        </div><div class="form-group">
+            <label for="idPriority">Приоритет:</label>
+            <select name="idPriority" id="idPriority" class="form-control" asp-items="ViewBag.PrioritiesList"></select>
+            <select name="moreEqualLessPriority" id="moreEqualLessPriority" class="form-control">
+                <option value="equals">Равно</option>
+                <option value="greaterThan">Больше</option>
+                <option value="lessThan">Меньше</option>
+    </select>
+</div>
+    </div>
+</form>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                @Html.DisplayNameFor(model => model.Item1.First().Title)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.User.Name)
+                @Html.DisplayNameFor(model => model.Item1.First().User.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Priority.Level)
+                @Html.DisplayNameFor(model => model.Item1.First().Priority.Level)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DueDate)
+                @Html.DisplayNameFor(model => model.Item1.First().DueDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsCompleted)
+                @Html.DisplayNameFor(model => model.Item1.First().IsCompleted)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.Item1)
         {
-            <tr class="list-selected" data-id="@item.Id">
+            <tr class="list-selected highlight-on-hover" data-id="@item.Id" data-controller="ToDoItem" data-action="Show">
                 <td>
                     @Html.DisplayFor(modelItem => item.Title)
                 </td>

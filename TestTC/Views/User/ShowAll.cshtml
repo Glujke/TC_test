@@ -4,6 +4,8 @@
     ViewData["Title"] = "Список исполнителей";
 }
 
+<script src="~/assets/js/tableRowClick.js"></script>
+
 <p>
     <a asp-action="Add">Добавить пользователя</a>
 </p>
@@ -18,14 +20,9 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr class="list-selected">
+            <tr class="list-selected highlight-on-hover" data-id="@item.Id" data-controller="User" data-action="Edit">
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    <a asp-action="Show" asp-route-id="@item.Id">Детали</a> |
-                    <a asp-action="Edit" asp-route-id="@item.Id">Редактировать</a> |
-                    <a asp-action="Remove" asp-route-id="@item.Id">Удалить</a>
                 </td>
             </tr>
         }

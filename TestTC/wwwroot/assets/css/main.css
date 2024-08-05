@@ -2292,7 +2292,6 @@ button,
     color: red !important; 
 }
 
-.list-selected:hover {
-    background-color: #ffff99;
-    cursor: pointer;
-}
+.list-selected.highlight-on-hover:hover {
+    background-color: #ffff99; 
+    cursor: pointer; 
