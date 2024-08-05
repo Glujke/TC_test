@@ -2291,3 +2291,8 @@ button,
 .text-danger {
     color: red !important; 
 }
+
+.list-selected:hover {
+    background-color: #ffff99;
+    cursor: pointer;
+}
