@@ -5,15 +5,15 @@ using TC.Models;
 using TC.Repository.Abstract;
 using TC.Repository.Entity;
 
-namespace TC.Controllers.API
+namespace TestTC.ApiControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PriorityApiController : ControllerBase
+    public class ApiPriorityController : ControllerBase
     {
         private readonly IPriorityRepository priorityRepository;
 
-        public PriorityApiController(IPriorityRepository priorityRepository)
+        public ApiPriorityController(IPriorityRepository priorityRepository)
         {
             this.priorityRepository = priorityRepository;
         }
@@ -68,7 +68,7 @@ namespace TC.Controllers.API
             }
 
             await priorityRepository.EditPriority(priority);
-            return NoContent(); 
+            return NoContent();
         }
 
         // DELETE: api/Priority/{id}
