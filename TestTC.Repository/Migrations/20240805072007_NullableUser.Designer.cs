@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TC.Repository.Context;
 
@@ -11,9 +12,11 @@ using TC.Repository.Context;
 namespace TC.Repository.Migrations
 {
     [DbContext(typeof(TestTCDbContext))]
-    partial class TestTCDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240805072007_NullableUser")]
+    partial class NullableUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -11,19 +11,35 @@
     <hr />
     <dl class="dl-horizontal">
 
-        <h3>
-            Исполнитель: @Html.DisplayFor(model => model.User.Name)
-        </h3>
+    <h3>
+    @if (Model.User != null && !string.IsNullOrEmpty(Model.User.Name))
+    {
+         <span>Исполнитель: @Html.DisplayFor(model => model.User.Name)</span>
+    }
+    else
+    {
+        <span>Исполнитель: Не назначено</span>
+    }
+    </h3>
     </dl>
     <dl class="dl-horizontal">
 
         <h3>
-                Дата сдачи: @Html.DisplayFor(model => model.Date)
+            Дата сдачи: @Html.DisplayFor(model => model.Date)
         </h3>
     </dl>
-    <h3>Описание</h3>
-    <p class="description-field">@Model.Description</p>
-    <div>
+    <dl class="dl-horizontal">
+        <h3>Описание</h3>
+        <p class="description-field">@Model.Description</p>
+        </dl>
+        <dl class="dl-horizontal">
+        <h3>
+           Готовность:
+        </h3>
+            <label>@(Model.IsCompleted ? "Готово" : "Не готово")</label>
+        </dl>
+     <div>
+        <a asp-action="FinishTask" asp-route-id="@Model.Id">Закрыть задачу</a>
         <a asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a> |
         <a asp-action="ShowAll">Назад к списку</a>
     </div>

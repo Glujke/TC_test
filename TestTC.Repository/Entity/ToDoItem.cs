@@ -25,7 +25,7 @@ public class ToDoItem
     public User? User { get; set; }
 
     [Display(Name = "Исполнитель")]
-    public int UserId { get; set; }
+    public int? UserId { get; set; }
 
     [Display(Name = "Приоритет")]
     [ForeignKey("PriorityId")]

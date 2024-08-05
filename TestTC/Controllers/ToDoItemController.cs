@@ -70,7 +70,7 @@ public class ToDoItemController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Edit(int id, [Bind("Id, Title, Description, DueDate, UserId, PriorityId")] ToDoItem toDoItem)
+    public async Task<IActionResult> Edit(int id, [Bind("Id, Title, Description, IsCompleted, DueDate, UserId, PriorityId")] ToDoItem toDoItem)
     {
         if (id != toDoItem.Id)
         {
@@ -105,6 +105,15 @@ public class ToDoItemController : Controller
     {
         var toDoItem = await toDoItemRepository.GetToDoItem(id);
         return View(toDoItem);
+    }
+
+    public async Task<IActionResult> FinishTask(int id)
+    {
+        var toDoItem = await toDoItemRepository.GetToDoItem(id);
+        toDoItem.IsCompleted = true;
+        await toDoItemRepository.EditToDoItem(toDoItem);
+        
+        return RedirectToAction("Show", new { id = id });
     }
 
     public async Task<IActionResult> ShowAll()
