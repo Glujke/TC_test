@@ -167,13 +167,13 @@ public class ToDoItemController : Controller
 
     [HttpPost]
     public async Task<IActionResult> ShowWithFilter(DateTime? dueDate, MoreEqualsLess moreEqualsLessDueDate,
-        int? idPriority, MoreEqualsLess moreEqualsLessPriority, bool isReady)
+        int? idPriority, MoreEqualsLess moreEqualsLessPriority, bool? isReady)
     {
         var filter = new Filter(dueDate, moreEqualsLessDueDate, idPriority, moreEqualsLessPriority, isReady);
         var res = await toDoItemRepository.GetFromFilter(filter);
         var priorities = await priorityRepository.GetAll;
 
-        return View((ToDoItems: res, Priorities: priorities));
+        return await ShowWithFilter((ToDoItems: res, Priorities: priorities));
     }
 
 }

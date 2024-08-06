@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using TC.Repository.Abstract;
 using TC.Repository.Entity;
 
-namespace TC.Controllers.Api
+namespace TestTC.Api.ApiControllers
 {
     [Route("api/[controller]")]
     [ApiController]

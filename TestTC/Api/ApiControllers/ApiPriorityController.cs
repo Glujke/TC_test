@@ -5,7 +5,7 @@ using TC.Models;
 using TC.Repository.Abstract;
 using TC.Repository.Entity;
 
-namespace TestTC.ApiControllers
+namespace TestTC.Api.ApiControllers
 {
     [Route("api/[controller]")]
     [ApiController]

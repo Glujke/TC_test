@@ -40,6 +40,6 @@ public class PriorityRepository : IPriorityRepository
     }
     public Task<IEnumerable<Priority>> GetAll => Task.FromResult<IEnumerable<Priority>>(mainContext.Priorities);
     public Task<Priority> GetFromId(int id) => 
-        mainContext.Priorities.Where(p => p.Id == id).FirstOrDefaultAsync();
+        mainContext.Priorities.Include(td => td.TodoItems).Where(p => p.Id == id).FirstOrDefaultAsync();
 
 }

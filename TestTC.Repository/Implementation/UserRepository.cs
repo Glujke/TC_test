@@ -47,6 +47,6 @@ public class UserRepository : IUserRepository
 		await mainContext.SaveChangesAsync();
 	}
 
-	public async Task<User> GetUser(int id) => await mainContext.Users.Where(user => user.Id == id).FirstOrDefaultAsync();
+	public async Task<User> GetUser(int id) => await mainContext.Users.Include(td => td.TodoItems).Where(user => user.Id == id).FirstOrDefaultAsync();
 
 }

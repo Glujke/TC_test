@@ -20,7 +20,7 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr class="list-selected highlight-on-hover" data-id="@item.Id" data-controller="User" data-action="Edit">
+            <tr class="list-selected highlight-on-hover" data-id="@item.Id" data-controller="User" data-action="Show">
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>

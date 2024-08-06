@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 using TC.Repository.Abstract;
 using TC.Repository.Entity;
 using TC.Repository.Implementation;
+using TestTC.Api.Requests;
 
-namespace TestTC.ApiControllers
+namespace TestTC.Api.ApiControllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -39,7 +40,7 @@ namespace TestTC.ApiControllers
 
             if (toDoItem == null)
             {
-                return NotFound(new { message = $"Задача с ID {id} не найдена в базе данных."});
+                return NotFound(new { message = $"Задача с ID {id} не найдена в базе данных." });
             }
 
             return Ok(toDoItem);
@@ -135,15 +136,10 @@ namespace TestTC.ApiControllers
                 return NotFound(new { message = $"Пользователь с ID {request.UserId} не найден в базе данных." });
             }
 
-            toDoItem.UserId = user.Id; 
-            await _toDoItemRepository.EditToDoItem(toDoItem); 
+            toDoItem.UserId = user.Id;
+            await _toDoItemRepository.EditToDoItem(toDoItem);
 
             return Ok(new { message = $"Задача с ID {id} успешно назначена пользователю с ID {request.UserId}." });
         }
-    }
-
-    public class UserAssignmentRequest
-    {
-        public int UserId { get; set; }
     }
 }
