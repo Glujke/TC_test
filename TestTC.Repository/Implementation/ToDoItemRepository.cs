@@ -4,8 +4,6 @@ using TC.Repository.Context;
 using TC.Repository.Entity;
 using TestTC.Repository.Enums;
 using TestTC.Repository.Filters;
-using System.Linq;
-using System;
 
 namespace TC.Repository.Implementation;
 

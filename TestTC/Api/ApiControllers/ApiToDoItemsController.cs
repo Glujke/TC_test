@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Serilog;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using TC.Repository.Abstract;
 using TC.Repository.Entity;
-using TC.Repository.Implementation;
 using TestTC.Api.Requests;
 
 namespace TestTC.Api.ApiControllers
@@ -14,16 +10,16 @@ namespace TestTC.Api.ApiControllers
     [ApiController]
     public class ApiToDoItemController : ControllerBase
     {
-        private readonly IToDoItemRepository _toDoItemRepository;
-        private readonly IUserRepository _userRepository;
-        private readonly IPriorityRepository _priorityRepository;
+        private readonly IToDoItemRepository toDoItemRepository;
+        private readonly IUserRepository userRepository;
+        private readonly IPriorityRepository priorityRepository;
 
         public ApiToDoItemController(IToDoItemRepository toDoItemRepository, IUserRepository userRepository,
             IPriorityRepository priorityRepository)
         {
-            _toDoItemRepository = toDoItemRepository;
-            _userRepository = userRepository;
-            _priorityRepository = priorityRepository;
+            this.toDoItemRepository = toDoItemRepository;
+            this.userRepository = userRepository;
+            this.priorityRepository = priorityRepository;
         }
 
         [HttpGet]
@@ -34,13 +30,17 @@ namespace TestTC.Api.ApiControllers
                 var toDoItems = await _toDoItemRepository.GetAll;
                 if (toDoItems == null) return NotFound();
                 return Ok(toDoItems);
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 Log.Error(ex.Message);
                 Log.Error(ex.InnerException?.Message);
                 Log.Error(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
-                return BadRequest(new { message = errorMessage });
+                return BadRequest(new
+                {
+                    message = errorMessage
+                });
             }
         }
 
@@ -53,17 +53,24 @@ namespace TestTC.Api.ApiControllers
 
                 if (toDoItem == null)
                 {
-                    return NotFound(new { message = $"Задача с ID {id} не найдена в базе данных." });
+                    return NotFound(new
+                    {
+                        message = $"Задача с ID {id} не найдена в базе данных."
+                    });
                 }
 
                 return Ok(toDoItem);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 Log.Error(ex.Message);
                 Log.Error(ex.InnerException?.Message);
                 Log.Error(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
-                return BadRequest(new { message = errorMessage });
+                return BadRequest(new
+                {
+                    message = errorMessage
+                });
             }
         }
 
@@ -76,19 +83,31 @@ namespace TestTC.Api.ApiControllers
             }
             if (toDoItem.DueDate < DateTime.Now)
             {
-                return BadRequest(new { message = $"Дата выполнения не может быть раньше текущей." });
+                return BadRequest(new
+                {
+                    message = $"Дата выполнения не может быть раньше текущей."
+                });
             }
             try
             {
                 await _toDoItemRepository.AddToDoItem(toDoItem);
-                return CreatedAtAction(nameof(Get), new { id = toDoItem.Id }, toDoItem);
-            }catch(Exception ex)
+                return CreatedAtAction(nameof(Get),
+                    new
+                    {
+                        id = toDoItem.Id
+                    },
+                    toDoItem);
+            }
+            catch (Exception ex)
             {
                 Log.Error(ex.Message);
                 Log.Error(ex.InnerException?.Message);
                 Log.Error(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
-                return BadRequest(new { message = errorMessage });
+                return BadRequest(new
+                {
+                    message = errorMessage
+                });
             }
         }
 
@@ -105,20 +124,26 @@ namespace TestTC.Api.ApiControllers
                 }
                 if (toDoItem.DueDate < DateTime.Now)
                 {
-                    return BadRequest(new { message = $"Дата выполнения не может быть раньше текущей." });
+                    return BadRequest(new
+                    {
+                        message = $"Дата выполнения не может быть раньше текущей."
+                    });
                 }
                 finishToDoItem.CopyFrom(toDoItem);
 
                 await _toDoItemRepository.EditToDoItem(finishToDoItem);
                 return Ok(finishToDoItem);
             }
-            catch(Exception ex) 
+            catch (Exception ex)
             {
                 Log.Error(ex.Message);
                 Log.Error(ex.InnerException?.Message);
                 Log.Error(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
-                return BadRequest(new { message = errorMessage });
+                return BadRequest(new
+                {
+                    message = errorMessage
+                });
             }
         }
 
@@ -131,18 +156,28 @@ namespace TestTC.Api.ApiControllers
 
                 if (toDoItem == null)
                 {
-                    return NotFound(new { message = $"Задача с ID {id} не найдена в базе данных." });
+                    return NotFound(new
+                    {
+                        message = $"Задача с ID {id} не найдена в базе данных."
+                    });
                 }
 
                 await _toDoItemRepository.RemoveToDoItem(toDoItem.Id);
-                return Ok(new { message = $"Задача с ID {id} успешно удалёна." });
-            } catch(Exception ex)
+                return Ok(new
+                {
+                    message = $"Задача с ID {id} успешно удалёна."
+                });
+            }
+            catch (Exception ex)
             {
                 Log.Error(ex.Message);
                 Log.Error(ex.InnerException?.Message);
                 Log.Error(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
-                return BadRequest(new { message = errorMessage });
+                return BadRequest(new
+                {
+                    message = errorMessage
+                });
             }
         }
 
@@ -155,18 +190,25 @@ namespace TestTC.Api.ApiControllers
 
                 if (toDoItem == null)
                 {
-                    return NotFound(new { message = $"Задача с ID {id} не найдена в базе данных." });
+                    return NotFound(new
+                    {
+                        message = $"Задача с ID {id} не найдена в базе данных."
+                    });
                 }
                 toDoItem.IsCompleted = true;
                 await _toDoItemRepository.EditToDoItem(toDoItem);
                 return Ok(toDoItem);
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 Log.Error(ex.Message);
                 Log.Error(ex.InnerException?.Message);
                 Log.Error(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
-                return BadRequest(new { message = errorMessage });
+                return BadRequest(new
+                {
+                    message = errorMessage
+                });
             }
         }
 
@@ -183,32 +225,45 @@ namespace TestTC.Api.ApiControllers
 
                 if (toDoItem == null)
                 {
-                    return NotFound(new { message = $"Задача с ID {id} не найдена в базе данных." });
+                    return NotFound(new
+                    {
+                        message = $"Задача с ID {id} не найдена в базе данных."
+                    });
                 }
 
                 if (request.UserId <= 0)
                 {
-                    return BadRequest(new { message = "ID пользователя должен быть положительным числом." });
+                    return BadRequest(new
+                    {
+                        message = "ID пользователя должен быть положительным числом."
+                    });
                 }
 
                 var user = await _userRepository.GetUser(request.UserId);
 
                 if (user == null)
                 {
-                    return NotFound(new { message = $"Пользователь с ID {request.UserId} не найден в базе данных." });
+                    return NotFound(new
+                    {
+                        message = $"Пользователь с ID {request.UserId} не найден в базе данных."
+                    });
                 }
 
                 toDoItem.UserId = user.Id;
                 await _toDoItemRepository.EditToDoItem(toDoItem);
 
                 return Ok(toDoItem);
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 Log.Error(ex.Message);
                 Log.Error(ex.InnerException?.Message);
                 Log.Error(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
-                return BadRequest(new { message = errorMessage });
+                return BadRequest(new
+                {
+                    message = errorMessage
+                });
             }
         }
     }

@@ -14,7 +14,7 @@
     <div id="filterContainer" style="display:none;">
         <div class="form-group">
             <label for="dueDate">Дата:</label>
-            <input type="datetime-local" name="dueDate" id="dueDate" class="form-control" />
+            <input type="datetime-local" name="dueDate" id="dueDate" class="form-control"/>
             <select name="moreEqualsLessDueDate" id="moreEqualsLessDueDate" class="form-control">
                 <option value="Equals">Равно</option>
                 <option value="More">Больше</option>
@@ -35,61 +35,67 @@
         <div class="form-group">
             <label for="isReady">Готовность:</label>
             <select name="isReady" id="isReady" class="form-control">
-            <option value=""></option>
-            <option value="True">Готово</option>
-            <option value="False">Не готово</option>
+                <option value=""></option>
+                <option value="True">Готово</option>
+                <option value="False">Не готово</option>
             </select>
-         </div>
+        </div>
     </div>
 </form>
 
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Item1.First().Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Item1.First().User.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Item1.First().Priority.Level)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Item1.First().DueDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Item1.First().IsCompleted)
-            </th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Item1.First().Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Item1.First().User.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Item1.First().Priority.Level)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Item1.First().DueDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Item1.First().IsCompleted)
+        </th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Item1)
-        {
-            <tr class="list-selected highlight-on-hover" data-id="@item.Id" data-controller="ToDoItem" data-action="Show">
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.User.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Priority.Level)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Date)
-                </td>
-                <td> @if(item.IsCompleted){      
+    @foreach (var item in Model.Item1)
+    {
+        <tr class="list-selected highlight-on-hover" data-id="@item.Id" data-controller="ToDoItem" data-action="Show">
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Priority.Level)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @if (item.IsCompleted)
+                {
                     <label class="control-label">Готова</label>
-                } else {
+                }
+                else
+                {
                     <label class="control-label">Не готово</label>
                 }
-                    
-                </td>
-            </tr>
-        }
+
+            </td>
+        </tr>
+    }
     </tbody>
 </table>
 
-<p><a asp-action="ShowAll" asp-controller="User">Список исполнителей</a></p>
+<p>
+    <a asp-action="ShowAll" asp-controller="User">Список исполнителей</a>
+</p>

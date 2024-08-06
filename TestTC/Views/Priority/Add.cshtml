@@ -9,15 +9,14 @@
 
         <form asp-action="Add">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Id"/>
             <div class="form-group">
-                <label asp-for="Level" class="control-label"></label>
-                <input asp-for="Level" class="form-control" />
-                <span asp-validation-for="Level" class="text-danger"></span>
+            <label asp-for="Level" class="control-label"></label>
+            <input asp-for="Level" class="form-control"/>
+            <span asp-validation-for="Level" class="text-danger"></span>
             <div class="form-group">
-                <input type="submit" value="Добавить" class="btn btn-default" />
+                <input type="submit" value="Добавить" class="btn btn-default"/>
             </div>
         </form>
     </div>
 </div>
-

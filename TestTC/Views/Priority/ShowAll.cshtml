@@ -9,25 +9,25 @@
 </p>
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Level)
-            </th>
-        </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Level)
+        </th>
+    </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            <tr class="list-selected">
-                <td>
-                    @Html.DisplayFor(modelItem => item.Level)
-                </td>
-                <td>
-                    <a asp-action="Show" asp-route-id="@item.Id">Показать все задачи</a> | 
-                    <a asp-action="Edit" asp-route-id="@item.Id">Редактировать</a> | 
-                    <a asp-action="Remove" asp-route-id="@item.Id">Удалить</a> 
-                </td>
-            </tr>
-        }
+    @foreach (var item in Model)
+    {
+        <tr class="list-selected">
+            <td>
+                @Html.DisplayFor(modelItem => item.Level)
+            </td>
+            <td>
+                <a asp-action="Show" asp-route-id="@item.Id">Показать все задачи</a> |
+                <a asp-action="Edit" asp-route-id="@item.Id">Редактировать</a> |
+                <a asp-action="Remove" asp-route-id="@item.Id">Удалить</a>
+            </td>
+        </tr>
+    }
     </tbody>
 </table>

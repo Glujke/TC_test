@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Serilog;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using TC.Repository.Abstract;
 using TC.Repository.Entity;
 
@@ -24,16 +22,24 @@ namespace TestTC.Api.ApiControllers
             try
             {
                 var users = await userRepository.GetAll;
-                if (users == null) return NotFound(new { message = $"Ничего не найдено." });
+                if (users == null)
+                    return NotFound(new
+                    {
+                        message = $"Ничего не найдено."
+                    });
 
                 return Ok(users);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Log.Error(ex.Message);
                 Log.Error(ex.InnerException?.Message);
                 Log.Error(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
-                return BadRequest(new { message = errorMessage });
+                return BadRequest(new
+                {
+                    message = errorMessage
+                });
             }
         }
 
@@ -44,16 +50,24 @@ namespace TestTC.Api.ApiControllers
             {
                 var user = await userRepository.GetUser(id);
 
-                if (user == null) return NotFound(new { message = $"Пользователь с ID {id} не найден в базе данных." });
+                if (user == null)
+                    return NotFound(new
+                    {
+                        message = $"Пользователь с ID {id} не найден в базе данных."
+                    });
 
                 return Ok(user);
-            }catch(Exception ex) 
+            }
+            catch (Exception ex)
             {
                 Log.Error(ex.Message);
                 Log.Error(ex.InnerException?.Message);
                 Log.Error(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
-                return BadRequest(new { message = errorMessage });
+                return BadRequest(new
+                {
+                    message = errorMessage
+                });
             }
         }
 
@@ -64,14 +78,23 @@ namespace TestTC.Api.ApiControllers
             try
             {
                 await userRepository.AddUser(user);
-                return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
-            } catch(Exception ex)
+                return CreatedAtAction(nameof(GetUser),
+                    new
+                    {
+                        id = user.Id
+                    },
+                    user);
+            }
+            catch (Exception ex)
             {
                 Log.Error(ex.Message);
                 Log.Error(ex.InnerException?.Message);
                 Log.Error(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
-                return BadRequest(new { message = errorMessage });
+                return BadRequest(new
+                {
+                    message = errorMessage
+                });
             }
         }
 
@@ -82,20 +105,33 @@ namespace TestTC.Api.ApiControllers
             try
             {
                 var existingUser = await userRepository.GetUser(id);
-                if (existingUser == null) return NotFound(new { message = $"Пользователь с ID {id} не найден в базе данных." });
+                if (existingUser == null)
+                    return NotFound(new
+                    {
+                        message = $"Пользователь с ID {id} не найден в базе данных."
+                    });
 
                 existingUser.Name = user.Name;
                 await userRepository.EditUser(existingUser);
 
 
-                return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
-            }catch(Exception ex)
+                return CreatedAtAction(nameof(GetUser),
+                    new
+                    {
+                        id = user.Id
+                    },
+                    user);
+            }
+            catch (Exception ex)
             {
                 Log.Error(ex.Message);
                 Log.Error(ex.InnerException?.Message);
                 Log.Error(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
-                return BadRequest(new { message = errorMessage });
+                return BadRequest(new
+                {
+                    message = errorMessage
+                });
             }
         }
 
@@ -105,18 +141,29 @@ namespace TestTC.Api.ApiControllers
             try
             {
                 var user = await userRepository.GetUser(id);
-                if (user == null) return NotFound(new { message = $"Пользователь с ID {id} не найден в базе данных." });
+                if (user == null)
+                    return NotFound(new
+                    {
+                        message = $"Пользователь с ID {id} не найден в базе данных."
+                    });
 
                 await userRepository.RemoveUser(id);
 
-                return Ok(new { message = $"Пользователь с ID {id} успешно удалён." });
-            } catch(Exception ex)
+                return Ok(new
+                {
+                    message = $"Пользователь с ID {id} успешно удалён."
+                });
+            }
+            catch (Exception ex)
             {
                 Log.Error(ex.Message);
                 Log.Error(ex.InnerException?.Message);
                 Log.Error(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
-                return BadRequest(new { message = errorMessage });
+                return BadRequest(new
+                {
+                    message = errorMessage
+                });
             }
         }
     }

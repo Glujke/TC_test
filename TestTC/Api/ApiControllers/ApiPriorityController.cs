@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Serilog;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using TC.Models;
 using TC.Repository.Abstract;
 using TC.Repository.Entity;
 
@@ -25,15 +22,23 @@ namespace TestTC.Api.ApiControllers
             try
             {
                 var priorities = await priorityRepository.GetAll;
-                if (priorities == null) return NotFound(new { message = $"Ничего не найдено." });
+                if (priorities == null)
+                    return NotFound(new
+                    {
+                        message = $"Ничего не найдено."
+                    });
                 return Ok(priorities);
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 Log.Error(ex.Message);
                 Log.Error(ex.InnerException?.Message);
                 Log.Error(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
-                return BadRequest(new { message = errorMessage });
+                return BadRequest(new
+                {
+                    message = errorMessage
+                });
             }
         }
 
@@ -46,7 +51,10 @@ namespace TestTC.Api.ApiControllers
 
                 if (priority == null)
                 {
-                    return NotFound(new { message = $"Приоритет с ID {id} не найден в базе данных." });
+                    return NotFound(new
+                    {
+                        message = $"Приоритет с ID {id} не найден в базе данных."
+                    });
                 }
                 return Ok(priority);
             }
@@ -56,7 +64,10 @@ namespace TestTC.Api.ApiControllers
                 Log.Error(ex.InnerException?.Message);
                 Log.Error(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
-                return BadRequest(new { message = errorMessage });
+                return BadRequest(new
+                {
+                    message = errorMessage
+                });
             }
         }
 
@@ -70,15 +81,23 @@ namespace TestTC.Api.ApiControllers
             try
             {
                 await priorityRepository.AddPriority(priority);
-                return CreatedAtAction(nameof(Get), new { id = priority.Id }, priority);
+                return CreatedAtAction(nameof(Get),
+                    new
+                    {
+                        id = priority.Id
+                    },
+                    priority);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Log.Error(ex.Message);
                 Log.Error(ex.InnerException?.Message);
                 Log.Error(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
-                return BadRequest(new { message = errorMessage });
+                return BadRequest(new
+                {
+                    message = errorMessage
+                });
             }
         }
 
@@ -97,14 +116,23 @@ namespace TestTC.Api.ApiControllers
             try
             {
                 await priorityRepository.EditPriority(priority);
-                return CreatedAtAction(nameof(Get), new { id = priority.Id }, priority);
-            } catch(Exception ex)
+                return CreatedAtAction(nameof(Get),
+                    new
+                    {
+                        id = priority.Id
+                    },
+                    priority);
+            }
+            catch (Exception ex)
             {
                 Log.Error(ex.Message);
                 Log.Error(ex.InnerException?.Message);
                 Log.Error(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
-                return BadRequest(new { message = errorMessage });
+                return BadRequest(new
+                {
+                    message = errorMessage
+                });
             }
         }
 
@@ -115,19 +143,29 @@ namespace TestTC.Api.ApiControllers
 
             if (priority == null)
             {
-                return NotFound(new { message = $"Приоритет с ID {id} не найден в базе данных." });
+                return NotFound(new
+                {
+                    message = $"Приоритет с ID {id} не найден в базе данных."
+                });
             }
             try
             {
                 await priorityRepository.RemovePriority(id);
-                return Ok(new { message = $"Приоритет с ID {id} успешно удалён." });
-            } catch(Exception ex)
+                return Ok(new
+                {
+                    message = $"Приоритет с ID {id} успешно удалён."
+                });
+            }
+            catch (Exception ex)
             {
                 Log.Error(ex.Message);
                 Log.Error(ex.InnerException?.Message);
                 Log.Error(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
-                return BadRequest(new { message = errorMessage });
+                return BadRequest(new
+                {
+                    message = errorMessage
+                });
             }
         }
     }

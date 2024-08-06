@@ -17,63 +17,65 @@
         <a asp-action="Edit" asp-route-id="@Model.Id">Изменить имя</a>
         <table class="table">
             <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.TodoItems.First().Title)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.TodoItems.First().User.Name)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.TodoItems.First().Priority.Level)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.TodoItems.First().DueDate)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.TodoItems.First().IsCompleted)
-                    </th>
-                    <th></th>
-                </tr>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.TodoItems.First().Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TodoItems.First().User.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TodoItems.First().Priority.Level)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TodoItems.First().DueDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TodoItems.First().IsCompleted)
+                </th>
+                <th></th>
+            </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.TodoItems)
-                {
-                    <tr class="list-selected highlight-on-hover" data-id="@item.Id" data-controller="ToDoItem" data-action="Show">
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Title)
-                        </td>
-                        <td>
-                            @if (item.User != null && !string.IsNullOrEmpty(item.User.Name))
-                            {
-                                <span>@Html.DisplayFor(modelItem => item.User.Name)</span>
-                            }
-                            else
-                            {
-                                <span>Не назначено</span>
-                            }
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Priority.Level)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Date)
-                        </td>
-                        <td>
-                            @if (item.IsCompleted)
-                            {
-                                <label class="control-label">Готова</label>
-                            }
-                            else
-                            {
-                                <label class="control-label">Не готово</label>
-                            }
+            @foreach (var item in Model.TodoItems)
+            {
+                <tr class="list-selected highlight-on-hover" data-id="@item.Id" data-controller="ToDoItem" data-action="Show">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @if (item.User != null && !string.IsNullOrEmpty(item.User.Name))
+                        {
+                            <span>@Html.DisplayFor(modelItem => item.User.Name)</span>
+                        }
+                        else
+                        {
+                            <span>Не назначено</span>
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Priority.Level)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                    <td>
+                        @if (item.IsCompleted)
+                        {
+                            <label class="control-label">Готова</label>
+                        }
+                        else
+                        {
+                            <label class="control-label">Не готово</label>
+                        }
 
-                        </td>
-                    </tr>
-                }
+                    </td>
+                </tr>
+            }
             </tbody>
         </table>
-        <p><a asp-action="ShowAll" asp-controller="User">Назад к списку</a></p>
+        <p>
+            <a asp-action="ShowAll" asp-controller="User">Назад к списку</a>
+        </p>
     </div>
 </div>

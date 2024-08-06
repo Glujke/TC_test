@@ -9,16 +9,14 @@
 
         <form asp-action="Add">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Id"/>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-                <div class="form-group">
-                    <input type="submit" value="Добавить" class="btn btn-default" />
-                </div>
+            <label asp-for="Name" class="control-label"></label>
+            <input asp-for="Name" class="form-control"/>
+            <span asp-validation-for="Name" class="text-danger"></span>
+            <div class="form-group">
+                <input type="submit" value="Добавить" class="btn btn-default"/>
+            </div>
         </form>
     </div>
 </div>
-
-
