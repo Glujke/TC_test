@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Serilog;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TC.Repository.Abstract;
@@ -28,22 +29,42 @@ namespace TestTC.Api.ApiControllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ToDoItem>>> GetAll()
         {
-            var toDoItems = await _toDoItemRepository.GetAll;
-            if (toDoItems == null) return NotFound();
-            return Ok(toDoItems);
+            try
+            {
+                var toDoItems = await _toDoItemRepository.GetAll;
+                if (toDoItems == null) return NotFound();
+                return Ok(toDoItems);
+            } catch(Exception ex)
+            {
+                Log.Error(ex.Message);
+                Log.Error(ex.InnerException?.Message);
+                Log.Error(ex.StackTrace);
+                var errorMessage = ex.InnerException?.Message ?? ex.Message;
+                return BadRequest(new { message = errorMessage });
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<ToDoItem>> Get(int id)
         {
-            var toDoItem = await _toDoItemRepository.GetToDoItem(id);
-
-            if (toDoItem == null)
+            try
             {
-                return NotFound(new { message = $"Задача с ID {id} не найдена в базе данных." });
-            }
+                var toDoItem = await _toDoItemRepository.GetToDoItem(id);
 
-            return Ok(toDoItem);
+                if (toDoItem == null)
+                {
+                    return NotFound(new { message = $"Задача с ID {id} не найдена в базе данных." });
+                }
+
+                return Ok(toDoItem);
+            }catch(Exception ex)
+            {
+                Log.Error(ex.Message);
+                Log.Error(ex.InnerException?.Message);
+                Log.Error(ex.StackTrace);
+                var errorMessage = ex.InnerException?.Message ?? ex.Message;
+                return BadRequest(new { message = errorMessage });
+            }
         }
 
         [HttpPost]
@@ -57,56 +78,96 @@ namespace TestTC.Api.ApiControllers
             {
                 return BadRequest(new { message = $"Дата выполнения не может быть раньше текущей." });
             }
-
-            await _toDoItemRepository.AddToDoItem(toDoItem);
-            return CreatedAtAction(nameof(Get), new { id = toDoItem.Id }, toDoItem);
+            try
+            {
+                await _toDoItemRepository.AddToDoItem(toDoItem);
+                return CreatedAtAction(nameof(Get), new { id = toDoItem.Id }, toDoItem);
+            }catch(Exception ex)
+            {
+                Log.Error(ex.Message);
+                Log.Error(ex.InnerException?.Message);
+                Log.Error(ex.StackTrace);
+                var errorMessage = ex.InnerException?.Message ?? ex.Message;
+                return BadRequest(new { message = errorMessage });
+            }
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Edit(int id, [FromBody] ToDoItem toDoItem)
         {
-            var finishToDoItem = await _toDoItemRepository.GetToDoItem(id);
-
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
-            }
-            if (toDoItem.DueDate < DateTime.Now)
-            {
-                return BadRequest(new { message = $"Дата выполнения не может быть раньше текущей." });
-            }
-            finishToDoItem.CopyFrom(toDoItem);
+                var finishToDoItem = await _toDoItemRepository.GetToDoItem(id);
 
-            await _toDoItemRepository.EditToDoItem(finishToDoItem);
-            return Ok(finishToDoItem);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                if (toDoItem.DueDate < DateTime.Now)
+                {
+                    return BadRequest(new { message = $"Дата выполнения не может быть раньше текущей." });
+                }
+                finishToDoItem.CopyFrom(toDoItem);
+
+                await _toDoItemRepository.EditToDoItem(finishToDoItem);
+                return Ok(finishToDoItem);
+            }
+            catch(Exception ex) 
+            {
+                Log.Error(ex.Message);
+                Log.Error(ex.InnerException?.Message);
+                Log.Error(ex.StackTrace);
+                var errorMessage = ex.InnerException?.Message ?? ex.Message;
+                return BadRequest(new { message = errorMessage });
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var toDoItem = await _toDoItemRepository.GetToDoItem(id);
-
-            if (toDoItem == null)
+            try
             {
-                return NotFound(new { message = $"Задача с ID {id} не найдена в базе данных." });
-            }
+                var toDoItem = await _toDoItemRepository.GetToDoItem(id);
 
-            await _toDoItemRepository.RemoveToDoItem(toDoItem.Id);
-            return Ok(new { message = $"Задача с ID {id} успешно удалёна." });
+                if (toDoItem == null)
+                {
+                    return NotFound(new { message = $"Задача с ID {id} не найдена в базе данных." });
+                }
+
+                await _toDoItemRepository.RemoveToDoItem(toDoItem.Id);
+                return Ok(new { message = $"Задача с ID {id} успешно удалёна." });
+            } catch(Exception ex)
+            {
+                Log.Error(ex.Message);
+                Log.Error(ex.InnerException?.Message);
+                Log.Error(ex.StackTrace);
+                var errorMessage = ex.InnerException?.Message ?? ex.Message;
+                return BadRequest(new { message = errorMessage });
+            }
         }
 
         [HttpPost("{id}/complete")]
         public async Task<IActionResult> Complete(int id)
         {
-            var toDoItem = await _toDoItemRepository.GetToDoItem(id);
-
-            if (toDoItem == null)
+            try
             {
-                return NotFound(new { message = $"Задача с ID {id} не найдена в базе данных." });
+                var toDoItem = await _toDoItemRepository.GetToDoItem(id);
+
+                if (toDoItem == null)
+                {
+                    return NotFound(new { message = $"Задача с ID {id} не найдена в базе данных." });
+                }
+                toDoItem.IsCompleted = true;
+                await _toDoItemRepository.EditToDoItem(toDoItem);
+                return Ok(toDoItem);
+            } catch(Exception ex)
+            {
+                Log.Error(ex.Message);
+                Log.Error(ex.InnerException?.Message);
+                Log.Error(ex.StackTrace);
+                var errorMessage = ex.InnerException?.Message ?? ex.Message;
+                return BadRequest(new { message = errorMessage });
             }
-            toDoItem.IsCompleted = true;
-            await _toDoItemRepository.EditToDoItem(toDoItem);
-            return Ok(toDoItem);
         }
 
         [HttpPost("{id}/assign")]
@@ -116,30 +177,39 @@ namespace TestTC.Api.ApiControllers
             {
                 return BadRequest(ModelState);
             }
-
-            var toDoItem = await _toDoItemRepository.GetToDoItem(id);
-
-            if (toDoItem == null)
+            try
             {
-                return NotFound(new { message = $"Задача с ID {id} не найдена в базе данных." });
-            }
+                var toDoItem = await _toDoItemRepository.GetToDoItem(id);
 
-            if (request.UserId <= 0)
+                if (toDoItem == null)
+                {
+                    return NotFound(new { message = $"Задача с ID {id} не найдена в базе данных." });
+                }
+
+                if (request.UserId <= 0)
+                {
+                    return BadRequest(new { message = "ID пользователя должен быть положительным числом." });
+                }
+
+                var user = await _userRepository.GetUser(request.UserId);
+
+                if (user == null)
+                {
+                    return NotFound(new { message = $"Пользователь с ID {request.UserId} не найден в базе данных." });
+                }
+
+                toDoItem.UserId = user.Id;
+                await _toDoItemRepository.EditToDoItem(toDoItem);
+
+                return Ok(toDoItem);
+            } catch(Exception ex)
             {
-                return BadRequest(new { message = "ID пользователя должен быть положительным числом." });
+                Log.Error(ex.Message);
+                Log.Error(ex.InnerException?.Message);
+                Log.Error(ex.StackTrace);
+                var errorMessage = ex.InnerException?.Message ?? ex.Message;
+                return BadRequest(new { message = errorMessage });
             }
-
-            var user = await _userRepository.GetUser(request.UserId);
-
-            if (user == null)
-            {
-                return NotFound(new { message = $"Пользователь с ID {request.UserId} не найден в базе данных." });
-            }
-
-            toDoItem.UserId = user.Id;
-            await _toDoItemRepository.EditToDoItem(toDoItem);
-
-            return Ok(toDoItem);
         }
     }
 }

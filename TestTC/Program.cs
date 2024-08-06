@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using System.Text.Json.Serialization;
 using TC.Repository.Abstract;
 using TC.Repository.Context;
@@ -23,6 +25,13 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
 });
 
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.File($"Logs\\log{DateTime.Now.ToString("yyyyMMdd")}.txt")
+    .CreateLogger();
+
+builder.Services.AddLogging();
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
@@ -43,5 +52,4 @@ app.UseRouting();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
 app.Run();

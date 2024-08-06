@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TC.Models;
@@ -21,22 +22,42 @@ namespace TestTC.Api.ApiControllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Priority>>> GetAll()
         {
-            var priorities = await priorityRepository.GetAll;
-            if (priorities == null) return NotFound(new { message = $"Ничего не найдено." });
-            return Ok(priorities);
+            try
+            {
+                var priorities = await priorityRepository.GetAll;
+                if (priorities == null) return NotFound(new { message = $"Ничего не найдено." });
+                return Ok(priorities);
+            } catch(Exception ex)
+            {
+                Log.Error(ex.Message);
+                Log.Error(ex.InnerException?.Message);
+                Log.Error(ex.StackTrace);
+                var errorMessage = ex.InnerException?.Message ?? ex.Message;
+                return BadRequest(new { message = errorMessage });
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Priority>> Get(int id)
         {
-            var priority = await priorityRepository.GetFromId(id);
-
-            if (priority == null)
+            try
             {
-                return NotFound(new { message = $"Приоритет с ID {id} не найден в базе данных." });
-            }
+                var priority = await priorityRepository.GetFromId(id);
 
-            return Ok(priority);
+                if (priority == null)
+                {
+                    return NotFound(new { message = $"Приоритет с ID {id} не найден в базе данных." });
+                }
+                return Ok(priority);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+                Log.Error(ex.InnerException?.Message);
+                Log.Error(ex.StackTrace);
+                var errorMessage = ex.InnerException?.Message ?? ex.Message;
+                return BadRequest(new { message = errorMessage });
+            }
         }
 
         [HttpPost]
@@ -46,9 +67,19 @@ namespace TestTC.Api.ApiControllers
             {
                 return BadRequest(ModelState);
             }
-
-            await priorityRepository.AddPriority(priority);
-            return CreatedAtAction(nameof(Get), new { id = priority.Id }, priority);
+            try
+            {
+                await priorityRepository.AddPriority(priority);
+                return CreatedAtAction(nameof(Get), new { id = priority.Id }, priority);
+            }
+            catch(Exception ex)
+            {
+                Log.Error(ex.Message);
+                Log.Error(ex.InnerException?.Message);
+                Log.Error(ex.StackTrace);
+                var errorMessage = ex.InnerException?.Message ?? ex.Message;
+                return BadRequest(new { message = errorMessage });
+            }
         }
 
         [HttpPut("{id}")]
@@ -63,9 +94,18 @@ namespace TestTC.Api.ApiControllers
             {
                 return BadRequest(ModelState);
             }
-
-            await priorityRepository.EditPriority(priority);
-            return CreatedAtAction(nameof(Get), new { id = priority.Id }, priority);
+            try
+            {
+                await priorityRepository.EditPriority(priority);
+                return CreatedAtAction(nameof(Get), new { id = priority.Id }, priority);
+            } catch(Exception ex)
+            {
+                Log.Error(ex.Message);
+                Log.Error(ex.InnerException?.Message);
+                Log.Error(ex.StackTrace);
+                var errorMessage = ex.InnerException?.Message ?? ex.Message;
+                return BadRequest(new { message = errorMessage });
+            }
         }
 
         [HttpDelete("{id}")]
@@ -77,9 +117,18 @@ namespace TestTC.Api.ApiControllers
             {
                 return NotFound(new { message = $"Приоритет с ID {id} не найден в базе данных." });
             }
-
-            await priorityRepository.RemovePriority(id);
-            return Ok(new { message = $"Приоритет с ID {id} успешно удалён." });
+            try
+            {
+                await priorityRepository.RemovePriority(id);
+                return Ok(new { message = $"Приоритет с ID {id} успешно удалён." });
+            } catch(Exception ex)
+            {
+                Log.Error(ex.Message);
+                Log.Error(ex.InnerException?.Message);
+                Log.Error(ex.StackTrace);
+                var errorMessage = ex.InnerException?.Message ?? ex.Message;
+                return BadRequest(new { message = errorMessage });
+            }
         }
     }
 }

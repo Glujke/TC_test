@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Serilog;
 using TC.Models;
 using TC.Repository.Abstract;
 using TC.Repository.Entity;
@@ -30,14 +31,34 @@ public class PriorityController : Controller
                     "Данные не прошли валидацию.");
             return View();
         }
-        await priorityRepository.AddPriority(priority);
-        return RedirectToAction(nameof(ShowAll));
+        try
+        {
+            await priorityRepository.AddPriority(priority);
+            return RedirectToAction(nameof(ShowAll));
+        }catch(Exception ex)
+        {
+            Log.Error(ex.Message);
+            Log.Error(ex.InnerException?.Message);
+            Log.Error(ex.StackTrace);
+            var errorMessage = ex.InnerException?.Message ?? ex.Message;
+            return View("Error", new ErrorViewModel { RequestId = errorMessage });
+        }
     }
     public async Task<IActionResult> Edit(int id)
     {
-        var res = await priorityRepository.GetFromId(id);
-        ViewData["Id"] = id;
-        return View(res);
+        try
+        {
+            var res = await priorityRepository.GetFromId(id);
+            ViewData["Id"] = id;
+            return View(res);
+        }catch(Exception ex)
+        {
+            Log.Error(ex.Message);
+            Log.Error(ex.InnerException?.Message);
+            Log.Error(ex.StackTrace);
+            var errorMessage = ex.InnerException?.Message ?? ex.Message;
+            return View("Error", new ErrorViewModel { RequestId = errorMessage });
+        }
     }
 
     [HttpPost]
@@ -55,32 +76,82 @@ public class PriorityController : Controller
                     "Данные не прошли валидацию.");
             return View();
         }
-        await priorityRepository.EditPriority(priority);
-        return RedirectToAction(nameof(ShowAll));
+        try
+        {
+            await priorityRepository.EditPriority(priority);
+            return RedirectToAction(nameof(ShowAll));
+        }catch(Exception ex)
+        {
+            Log.Error(ex.Message);
+            Log.Error(ex.InnerException?.Message);
+            Log.Error(ex.StackTrace);
+            var errorMessage = ex.InnerException?.Message ?? ex.Message;
+            return View("Error", new ErrorViewModel { RequestId = errorMessage });
+        }
     }
     public async Task<IActionResult> Remove(int id)
     {
-        var res = await priorityRepository.GetAll;
-        ViewData["PriorityId"] = new SelectList(res, "Id, Level");
-        return View();
+        try
+        {
+            var res = await priorityRepository.GetAll;
+            ViewData["PriorityId"] = new SelectList(res, "Id, Level");
+            return View();
+        } catch(Exception ex)
+        {
+            Log.Error(ex.Message);
+            Log.Error(ex.InnerException?.Message);
+            Log.Error(ex.StackTrace);
+            var errorMessage = ex.InnerException?.Message ?? ex.Message;
+            return View("Error", new ErrorViewModel { RequestId = errorMessage });
+        }
     }
 
     [HttpPost, ActionName("Remove")]
     public async Task<IActionResult> RemoveConfirmed(int id)
     {
-        await priorityRepository.RemovePriority(id);
-        return RedirectToAction(nameof(ShowAll));
+        try
+        {
+            await priorityRepository.RemovePriority(id);
+            return RedirectToAction(nameof(ShowAll));
+        } catch(Exception ex)
+        {
+            Log.Error(ex.Message);
+            Log.Error(ex.InnerException?.Message);
+            Log.Error(ex.StackTrace);
+            var errorMessage = ex.InnerException?.Message ?? ex.Message;
+            return View("Error", new ErrorViewModel { RequestId = errorMessage });
+        }
     }
 
     public async Task<IActionResult> Show(int id)
     {
-        var res = await priorityRepository.GetFromId(id);
-        ViewData["Id"] = id;
-        return View(res);
+        try
+        {
+            var res = await priorityRepository.GetFromId(id);
+            ViewData["Id"] = id;
+            return View(res);
+        } catch(Exception ex)
+        {
+            Log.Error(ex.Message);
+            Log.Error(ex.InnerException?.Message);
+            Log.Error(ex.StackTrace);
+            var errorMessage = ex.InnerException?.Message ?? ex.Message;
+            return View("Error", new ErrorViewModel { RequestId = errorMessage });
+        }
     }
     public async Task<IActionResult> ShowAll()
     {
-        var res = await priorityRepository.GetAll;
-        return View(res);
+        try
+        {
+            var res = await priorityRepository.GetAll;
+            return View(res);
+        } catch(Exception ex)
+        {
+            Log.Error(ex.Message);
+            Log.Error(ex.InnerException?.Message);
+            Log.Error(ex.StackTrace);
+            var errorMessage = ex.InnerException?.Message ?? ex.Message;
+            return View("Error", new ErrorViewModel { RequestId = errorMessage });
+        }
     }
 }
