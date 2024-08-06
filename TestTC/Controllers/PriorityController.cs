@@ -18,8 +18,18 @@ public class PriorityController : Controller
 
     public async Task<IActionResult> Add()
     {
-        var res = await priorityRepository.GetAll;
-        return View();
+        try
+        {
+            var res = await priorityRepository.GetAll;
+            return View();
+        }catch(Exception ex)
+        {
+            Log.Error(ex.Message);
+            Log.Error(ex.InnerException?.Message);
+            Log.Error(ex.StackTrace);
+            var errorMessage = ex.InnerException?.Message ?? ex.Message;
+            return View("Error", new ErrorViewModel { RequestId = errorMessage });
+        }
     }
 
     [HttpPost]
