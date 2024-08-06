@@ -22,7 +22,7 @@ namespace TC.Controllers.Api
         public async Task<ActionResult<IEnumerable<User>>> GetAll()
         {
             var users = await userRepository.GetAll;
-            if (users == null) return NotFound();
+            if (users == null) return NotFound(new { message = $"Ничего не найдено." });
 
             return Ok(users);
         }
@@ -33,7 +33,7 @@ namespace TC.Controllers.Api
         {
             var user = await userRepository.GetUser(id);
 
-            if (user == null) return NotFound();
+            if (user == null) return NotFound(new { message = $"Пользователь с ID {id} не найден в базе данных." });
 
             return Ok(user);
         }
@@ -54,13 +54,13 @@ namespace TC.Controllers.Api
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var existingUser = await userRepository.GetUser(id);
-            if (existingUser == null) return NotFound();
+            if (existingUser == null) return NotFound(new { message = $"Пользователь с ID {id} не найден в базе данных." });
 
             existingUser.Name = user.Name;
             await userRepository.EditUser(existingUser);
 
 
-            return NoContent(); 
+            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
         }
 
         // DELETE api/User/{id}
@@ -68,11 +68,11 @@ namespace TC.Controllers.Api
         public async Task<IActionResult> Delete(int id)
         {
             var user = await userRepository.GetUser(id);
-            if (user == null) return NotFound();
+            if (user == null) return NotFound(new { message = $"Пользователь с ID {id} не найден в базе данных." });
 
             await userRepository.RemoveUser(id);
 
-            return NoContent();
+            return Ok(new { message = $"Пользователь с ID {id} успешно удалён." });
         }
     }
 }

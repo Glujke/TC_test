@@ -11,15 +11,23 @@
     <hr />
     <dl class="dl-horizontal">
 
-    <h3>
-    @if (Model.User != null && !string.IsNullOrEmpty(Model.User.Name))
-    {
-         <span>Исполнитель: @Html.DisplayFor(model => model.User.Name)</span>
-    }
-    else
-    {
-        <span>Исполнитель: Не назначено</span>
-    }
+     <h3>
+      <form asp-action="Assign">
+      <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+      <input type="hidden" asp-for="Id" />
+      <input type="hidden" asp-for="Title" />
+      <input type="hidden" asp-for="Description" />
+      <input type="hidden" asp-for="PriorityId" />
+      <input type="hidden" asp-for="DueDate" />
+      <input type="hidden" asp-for="IsCompleted" />
+      <div class="form-group">
+          <label asp-for="UserId" class="control-label"></label>
+          <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"><option value="">Не назначен</option></select>
+      </div>
+      <div class="form-group">
+           <input type="submit" value="Назначить" class="btn btn-default" />
+      </div>
+     </form>
     </h3>
     </dl>
     <dl class="dl-horizontal">
@@ -39,8 +47,11 @@
             <label>@(Model.IsCompleted ? "Готово" : "Не готово")</label>
         </dl>
      <div>
-        <a asp-action="FinishTask" asp-route-id="@Model.Id">Закрыть задачу</a>
-        <a asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a> |
+            @if (!Model.IsCompleted)
+            {
+                <a asp-action="FinishTask" asp-route-id="@Model.Id">Закрыть задачу</a>
+            }
+            <a asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a> |
         <a asp-action="ShowAll">Назад к списку</a>
     </div>
 </div>

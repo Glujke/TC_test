@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using TC.Models;
 using TC.Repository.Abstract;
 using TC.Repository.Entity;
 
@@ -23,12 +24,15 @@ public class UserController : Controller
 	[HttpPost]
 	public async Task<IActionResult> Add([Bind("Name")] User user)
 	{
-		if (ModelState.IsValid)
-		{
-			await userRepository.AddUser(user);
-            return RedirectToAction(nameof(ShowAll));
+        if (!ModelState.IsValid)
+        {
+            ModelState.AddModelError("",
+                    "Данные не прошли валидацию.");
+            return View();
         }
-        return View("Error");
+
+        await userRepository.AddUser(user);
+        return RedirectToAction(nameof(ShowAll));
     }
 	public async Task<IActionResult> Edit(int id)
 	{
@@ -38,14 +42,23 @@ public class UserController : Controller
 	}
 
 	[HttpPost]
-	public async Task<IActionResult> Edit([Bind("Id, Name")] User user)
-	{
-		if (ModelState.IsValid)
-		{
-			await userRepository.EditUser(user);
-            return RedirectToAction(nameof(ShowAll));
+	public async Task<IActionResult> Edit(int id, [Bind("Id, Name")] User user)
+    {
+        if (id != user.Id)
+        {
+            ModelState.AddModelError("",
+                    "ID не совпадает.");
+            return View(user);
         }
-        return View("Error");
+        if (ModelState.IsValid)
+        {
+            ModelState.AddModelError("",
+                    "Данные не прошли валидацию.");
+            return View();
+        }
+
+        await userRepository.EditUser(user);
+        return RedirectToAction(nameof(ShowAll));
     }
     public async Task<IActionResult> Remove(int id)
     {

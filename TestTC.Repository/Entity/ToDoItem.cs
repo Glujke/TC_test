@@ -37,4 +37,16 @@ public class ToDoItem
     [NotMapped]
     public string Date => DueDate.ToString("dd.MM.yyyy");
 
+    public void CopyFrom(ToDoItem copyItem)
+    {
+        this.Title = copyItem.Title;
+        this.Description = copyItem.Description;
+        this.Priority = copyItem.Priority;
+        this.PriorityId= copyItem.PriorityId;
+        this.User = copyItem.User;
+        this.UserId = copyItem.UserId;
+        this.IsCompleted = copyItem.IsCompleted;
+        this.DueDate = copyItem.DueDate;
+    }
+
 }

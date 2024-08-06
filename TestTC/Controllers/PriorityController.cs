@@ -24,12 +24,14 @@ public class PriorityController : Controller
     [HttpPost]
     public async Task<IActionResult> Add([Bind("Level")] Priority priority)
     {
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
-            await priorityRepository.AddPriority(priority);
-            return RedirectToAction(nameof(ShowAll));
+            ModelState.AddModelError("",
+                    "Данные не прошли валидацию.");
+            return View();
         }
-        return View("Error", new ErrorViewModel() {RequestId ="Ошибка"});
+        await priorityRepository.AddPriority(priority);
+        return RedirectToAction(nameof(ShowAll));
     }
     public async Task<IActionResult> Edit(int id)
     {
@@ -39,14 +41,22 @@ public class PriorityController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Edit([Bind("Id, Level")] Priority priority)
+    public async Task<IActionResult> Edit(int id, [Bind("Id, Level")] Priority priority)
     {
-        if (ModelState.IsValid)
+        if (id != priority.Id)
         {
-            await priorityRepository.EditPriority(priority);
-            return RedirectToAction(nameof(ShowAll));
+            ModelState.AddModelError("",
+                    "ID не совпадает.");
+            return View(priority);
         }
-        return View("Error");
+        if (!ModelState.IsValid)
+        {
+            ModelState.AddModelError("",
+                    "Данные не прошли валидацию.");
+            return View();
+        }
+        await priorityRepository.EditPriority(priority);
+        return RedirectToAction(nameof(ShowAll));
     }
     public async Task<IActionResult> Remove(int id)
     {

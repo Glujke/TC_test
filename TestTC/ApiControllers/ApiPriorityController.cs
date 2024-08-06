@@ -23,6 +23,7 @@ namespace TestTC.ApiControllers
         public async Task<ActionResult<IEnumerable<Priority>>> GetAll()
         {
             var priorities = await priorityRepository.GetAll;
+            if (priorities == null) return NotFound(new { message = $"Ничего не найдено." });
             return Ok(priorities);
         }
 
@@ -34,7 +35,7 @@ namespace TestTC.ApiControllers
 
             if (priority == null)
             {
-                return NotFound();
+                return NotFound(new { message = $"Приоритет с ID {id} не найден в базе данных." });
             }
 
             return Ok(priority);
@@ -68,7 +69,7 @@ namespace TestTC.ApiControllers
             }
 
             await priorityRepository.EditPriority(priority);
-            return NoContent();
+            return CreatedAtAction(nameof(Get), new { id = priority.Id }, priority);
         }
 
         // DELETE: api/Priority/{id}
@@ -83,7 +84,7 @@ namespace TestTC.ApiControllers
             }
 
             await priorityRepository.RemovePriority(id);
-            return NoContent();
+            return Ok(new { message = $"Приоритет с ID {id} успешно удалён." });
         }
     }
 }

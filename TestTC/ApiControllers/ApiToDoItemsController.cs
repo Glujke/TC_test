@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TC.Repository.Abstract;
@@ -27,6 +28,7 @@ namespace TestTC.ApiControllers
         public async Task<ActionResult<IEnumerable<ToDoItem>>> GetAll()
         {
             var toDoItems = await _toDoItemRepository.GetAll;
+            if (toDoItems == null) return NotFound(new { message = $"Ничего не найдено." });
             return Ok(toDoItems);
         }
 
@@ -37,7 +39,7 @@ namespace TestTC.ApiControllers
 
             if (toDoItem == null)
             {
-                return NotFound();
+                return NotFound(new { message = $"Задача с ID {id} не найдена в базе данных."});
             }
 
             return Ok(toDoItem);
@@ -49,6 +51,10 @@ namespace TestTC.ApiControllers
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
+            }
+            if (toDoItem.DueDate < DateTime.Now)
+            {
+                return BadRequest(new { message = $"Дата выполнения не может быть раньше текущей." });
             }
 
             await _toDoItemRepository.AddToDoItem(toDoItem);
@@ -64,17 +70,14 @@ namespace TestTC.ApiControllers
             {
                 return BadRequest(ModelState);
             }
-            finishToDoItem.Priority = toDoItem.Priority;
-            finishToDoItem.IsCompleted = toDoItem.IsCompleted;
-            finishToDoItem.PriorityId = toDoItem.PriorityId;
-            finishToDoItem.Description = toDoItem.Description;
-            finishToDoItem.Title = toDoItem.Title;
-            finishToDoItem.User = toDoItem.User;
-            finishToDoItem.UserId = toDoItem.UserId;
-            finishToDoItem.DueDate = toDoItem.DueDate;
+            if (toDoItem.DueDate < DateTime.Now)
+            {
+                return BadRequest(new { message = $"Дата выполнения не может быть раньше текущей." });
+            }
+            finishToDoItem.CopyFrom(toDoItem);
 
             await _toDoItemRepository.EditToDoItem(finishToDoItem);
-            return NoContent(); 
+            return Ok(new { message = $"Задача с ID {id} успешно обновлена." });
         }
 
         [HttpDelete("{id}")]
@@ -84,25 +87,63 @@ namespace TestTC.ApiControllers
 
             if (toDoItem == null)
             {
-                return NotFound();
+                return NotFound(new { message = $"Задача с ID {id} не найдена в базе данных." });
             }
 
             await _toDoItemRepository.RemoveToDoItem(toDoItem.Id);
-            return NoContent();
+            return Ok(new { message = $"Задача с ID {id} успешно удалёна." });
         }
 
-        [HttpPost("{id}")]
+        [HttpPost("{id}/complete")]
         public async Task<IActionResult> Complete(int id)
         {
             var toDoItem = await _toDoItemRepository.GetToDoItem(id);
 
             if (toDoItem == null)
             {
-                return NotFound();
+                return NotFound(new { message = $"Задача с ID {id} не найдена в базе данных." });
             }
             toDoItem.IsCompleted = true;
             await _toDoItemRepository.EditToDoItem(toDoItem);
-            return NoContent();
+            return Ok(new { message = $"Задача с ID {id} успешно выполнена." });
         }
+
+        [HttpPost("{id}/assign")]
+        public async Task<IActionResult> AssignUser(int id, [FromBody] UserAssignmentRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var toDoItem = await _toDoItemRepository.GetToDoItem(id);
+
+            if (toDoItem == null)
+            {
+                return NotFound(new { message = $"Задача с ID {id} не найдена в базе данных." });
+            }
+
+            if (request.UserId <= 0)
+            {
+                return BadRequest(new { message = "ID пользователя должен быть положительным числом." });
+            }
+
+            var user = await _userRepository.GetUser(request.UserId);
+
+            if (user == null)
+            {
+                return NotFound(new { message = $"Пользователь с ID {request.UserId} не найден в базе данных." });
+            }
+
+            toDoItem.UserId = user.Id; 
+            await _toDoItemRepository.EditToDoItem(toDoItem); 
+
+            return Ok(new { message = $"Задача с ID {id} успешно назначена пользователю с ID {request.UserId}." });
+        }
+    }
+
+    public class UserAssignmentRequest
+    {
+        public int UserId { get; set; }
     }
 }
