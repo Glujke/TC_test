@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Serilog;
+using TC.Controllers;
 using TC.Repository.Abstract;
 using TC.Repository.Entity;
 
@@ -10,10 +10,12 @@ namespace TestTC.Api.ApiControllers
     public class ApiPriorityController : ControllerBase
     {
         private readonly IPriorityRepository priorityRepository;
+        private readonly ILogger<ApiPriorityController> logger;
 
-        public ApiPriorityController(IPriorityRepository priorityRepository)
+        public ApiPriorityController(IPriorityRepository priorityRepository, ILogger<ApiPriorityController> logger)
         {
             this.priorityRepository = priorityRepository;
+            this.logger = logger;
         }
 
         [HttpGet]
@@ -23,22 +25,16 @@ namespace TestTC.Api.ApiControllers
             {
                 var priorities = await priorityRepository.GetAll;
                 if (priorities == null)
-                    return NotFound(new
-                    {
-                        message = $"Ничего не найдено."
-                    });
+                    return NotFound(new { message = $"Ничего не найдено." });
                 return Ok(priorities);
             }
             catch (Exception ex)
             {
-                Log.Error(ex.Message);
-                Log.Error(ex.InnerException?.Message);
-                Log.Error(ex.StackTrace);
+                logger.LogError(ex.Message);
+                logger.LogError(ex.InnerException?.Message);
+                logger.LogError(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
-                return BadRequest(new
-                {
-                    message = errorMessage
-                });
+                return BadRequest(new { message = errorMessage });
             }
         }
 
@@ -51,23 +47,17 @@ namespace TestTC.Api.ApiControllers
 
                 if (priority == null)
                 {
-                    return NotFound(new
-                    {
-                        message = $"Приоритет с ID {id} не найден в базе данных."
-                    });
+                    return NotFound(new { message = $"Приоритет с ID {id} не найден в базе данных." });
                 }
                 return Ok(priority);
             }
             catch (Exception ex)
             {
-                Log.Error(ex.Message);
-                Log.Error(ex.InnerException?.Message);
-                Log.Error(ex.StackTrace);
+                logger.LogError(ex.Message);
+                logger.LogError(ex.InnerException?.Message);
+                logger.LogError(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
-                return BadRequest(new
-                {
-                    message = errorMessage
-                });
+                return BadRequest(new { message = errorMessage });
             }
         }
 
@@ -81,23 +71,15 @@ namespace TestTC.Api.ApiControllers
             try
             {
                 await priorityRepository.AddPriority(priority);
-                return CreatedAtAction(nameof(Get),
-                    new
-                    {
-                        id = priority.Id
-                    },
-                    priority);
+                return CreatedAtAction(nameof(Get), new { id = priority.Id }, priority);
             }
             catch (Exception ex)
             {
-                Log.Error(ex.Message);
-                Log.Error(ex.InnerException?.Message);
-                Log.Error(ex.StackTrace);
+                logger.LogError(ex.Message);
+                logger.LogError(ex.InnerException?.Message);
+                logger.LogError(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
-                return BadRequest(new
-                {
-                    message = errorMessage
-                });
+                return BadRequest(new { message = errorMessage });
             }
         }
 
@@ -116,23 +98,15 @@ namespace TestTC.Api.ApiControllers
             try
             {
                 await priorityRepository.EditPriority(priority);
-                return CreatedAtAction(nameof(Get),
-                    new
-                    {
-                        id = priority.Id
-                    },
-                    priority);
+                return CreatedAtAction(nameof(Get), new { id = priority.Id }, priority);
             }
             catch (Exception ex)
             {
-                Log.Error(ex.Message);
-                Log.Error(ex.InnerException?.Message);
-                Log.Error(ex.StackTrace);
+                logger.LogError(ex.Message);
+                logger.LogError(ex.InnerException?.Message);
+                logger.LogError(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
-                return BadRequest(new
-                {
-                    message = errorMessage
-                });
+                return BadRequest(new { message = errorMessage });
             }
         }
 
@@ -143,29 +117,20 @@ namespace TestTC.Api.ApiControllers
 
             if (priority == null)
             {
-                return NotFound(new
-                {
-                    message = $"Приоритет с ID {id} не найден в базе данных."
-                });
+                return NotFound(new { message = $"Приоритет с ID {id} не найден в базе данных." });
             }
             try
             {
                 await priorityRepository.RemovePriority(id);
-                return Ok(new
-                {
-                    message = $"Приоритет с ID {id} успешно удалён."
-                });
+                return Ok(new { message = $"Приоритет с ID {id} успешно удалён." });
             }
             catch (Exception ex)
             {
-                Log.Error(ex.Message);
-                Log.Error(ex.InnerException?.Message);
-                Log.Error(ex.StackTrace);
+                logger.LogError(ex.Message);
+                logger.LogError(ex.InnerException?.Message);
+                logger.LogError(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
-                return BadRequest(new
-                {
-                    message = errorMessage
-                });
+                return BadRequest(new { message = errorMessage });
             }
         }
     }
