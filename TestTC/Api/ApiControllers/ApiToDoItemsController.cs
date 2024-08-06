@@ -29,7 +29,7 @@ namespace TestTC.Api.ApiControllers
         public async Task<ActionResult<IEnumerable<ToDoItem>>> GetAll()
         {
             var toDoItems = await _toDoItemRepository.GetAll;
-            if (toDoItems == null) return NotFound(new { message = $"Ничего не найдено." });
+            if (toDoItems == null) return NotFound();
             return Ok(toDoItems);
         }
 
@@ -78,7 +78,7 @@ namespace TestTC.Api.ApiControllers
             finishToDoItem.CopyFrom(toDoItem);
 
             await _toDoItemRepository.EditToDoItem(finishToDoItem);
-            return Ok(new { message = $"Задача с ID {id} успешно обновлена." });
+            return Ok(finishToDoItem);
         }
 
         [HttpDelete("{id}")]
@@ -106,7 +106,7 @@ namespace TestTC.Api.ApiControllers
             }
             toDoItem.IsCompleted = true;
             await _toDoItemRepository.EditToDoItem(toDoItem);
-            return Ok(new { message = $"Задача с ID {id} успешно выполнена." });
+            return Ok(toDoItem);
         }
 
         [HttpPost("{id}/assign")]
@@ -139,7 +139,7 @@ namespace TestTC.Api.ApiControllers
             toDoItem.UserId = user.Id;
             await _toDoItemRepository.EditToDoItem(toDoItem);
 
-            return Ok(new { message = $"Задача с ID {id} успешно назначена пользователю с ID {request.UserId}." });
+            return Ok(toDoItem);
         }
     }
 }

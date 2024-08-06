@@ -5,6 +5,7 @@ using TC.Repository.Entity;
 using TestTC.Repository.Enums;
 using TestTC.Repository.Filters;
 using System.Linq;
+using System;
 
 namespace TC.Repository.Implementation;
 
@@ -64,37 +65,35 @@ public class ToDoItemRepository : IToDoItemRepository
         if(filter.Date != null)
         {
             DateTime dateOnly = filter.Date.Value.Date;
-            switch (filter.moreLessEqualsDate)
-            {
-                case MoreEqualsLess.Equals:
-                    result = result.Where(td => td.DueDate.Date == dateOnly);
-                    break;
-                case MoreEqualsLess.More:
-                    result = result.Where(td => td.DueDate.Date >= dateOnly);
-                    break;
-                case MoreEqualsLess.Less:
-                    result = result.Where(td => td.DueDate.Date <= dateOnly);
-                    break;
-            }
+            result = Check(filter.moreLessEqualsDate, td => td.DueDate.Date == dateOnly,
+                td => td.DueDate.Date >= dateOnly, td => td.DueDate.Date <= dateOnly, result);
         }
         if(filter.priorityId != null)
         {
-            switch (filter.moreLessEqualsDate)
-            {
-                case MoreEqualsLess.Equals:
-                    result = result.Where(td => td.PriorityId == filter.priorityId);
-                    break;
-                case MoreEqualsLess.More:
-                    result = result.Where(td => td.PriorityId >= filter.priorityId);
-                    break;
-                case MoreEqualsLess.Less:
-                    result = result.Where(td => td.PriorityId <= filter.priorityId);
-                    break;
-            }
+            result = Check(filter.moreLessEqualsPriority, td => td.Priority.Level == filter.priorityId,
+                td => td.Priority.Level >= filter.priorityId, td => td.Priority.Level <= filter.priorityId, result);
         } 
         if(filter.IsReady != null)
         {
             result = result.Where(td => td.IsCompleted== filter.IsReady);
+        }
+        return result;
+    }
+
+    private IEnumerable<ToDoItem> Check(MoreEqualsLess moreEqualsLess, Func<ToDoItem, bool> predicateEquals,
+        Func<ToDoItem, bool> predicateMore, Func<ToDoItem, bool> predicateLess, IEnumerable<ToDoItem> result)
+    {
+        switch (moreEqualsLess)
+        {
+            case MoreEqualsLess.Equals:
+                result = result.Where(predicateEquals);
+                break;
+            case MoreEqualsLess.More:
+                result = result.Where(predicateMore);
+                break;
+            case MoreEqualsLess.Less:
+                result = result.Where(predicateLess);
+                break;
         }
         return result;
     }

@@ -18,7 +18,6 @@ namespace TestTC.Api.ApiControllers
             this.priorityRepository = priorityRepository;
         }
 
-        // GET: api/Priority
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Priority>>> GetAll()
         {
@@ -27,7 +26,6 @@ namespace TestTC.Api.ApiControllers
             return Ok(priorities);
         }
 
-        // GET: api/Priority/{id}
         [HttpGet("{id}")]
         public async Task<ActionResult<Priority>> Get(int id)
         {
@@ -41,7 +39,6 @@ namespace TestTC.Api.ApiControllers
             return Ok(priority);
         }
 
-        // POST: api/Priority
         [HttpPost]
         public async Task<ActionResult<Priority>> Create(Priority priority)
         {
@@ -54,7 +51,6 @@ namespace TestTC.Api.ApiControllers
             return CreatedAtAction(nameof(Get), new { id = priority.Id }, priority);
         }
 
-        // PUT: api/Priority/{id}
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, Priority priority)
         {
@@ -72,7 +68,6 @@ namespace TestTC.Api.ApiControllers
             return CreatedAtAction(nameof(Get), new { id = priority.Id }, priority);
         }
 
-        // DELETE: api/Priority/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

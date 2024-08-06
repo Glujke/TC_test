@@ -17,7 +17,6 @@ namespace TestTC.Api.ApiControllers
             this.userRepository = userRepository;
         }
 
-        // GET api/User
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetAll()
         {
@@ -27,7 +26,6 @@ namespace TestTC.Api.ApiControllers
             return Ok(users);
         }
 
-        // GET api/User/{id}
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
@@ -38,7 +36,6 @@ namespace TestTC.Api.ApiControllers
             return Ok(user);
         }
 
-        // POST api/User
         [HttpPost]
         public async Task<ActionResult<User>> Add(User user)
         {
@@ -47,7 +44,6 @@ namespace TestTC.Api.ApiControllers
             return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
         }
 
-        // PUT api/User/{id}
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, User user)
         {
@@ -63,7 +59,6 @@ namespace TestTC.Api.ApiControllers
             return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
         }
 
-        // DELETE api/User/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
