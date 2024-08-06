@@ -8,17 +8,13 @@ namespace TC.Repository.Entity;
 
 public class Priority
 {
-    private string[] priorities = {"Не важно", "Важно","Очеьн важно","Срочно","Очень срочно"};
-
     [Key]
     public int Id { get; set; }
 
     [Display(Name = "Приоритет")]
-    [Range(1, 5)]
+    [Range(1, 10)]
     [Obsolete]
     public int Level { get; set; }
     public IEnumerable<ToDoItem>? TodoItems { get; set; } = null;
-
-    public string LevelString(int idStr) => priorities[idStr];
 }
 

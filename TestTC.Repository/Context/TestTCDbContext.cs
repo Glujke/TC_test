@@ -17,6 +17,11 @@ public class TestTCDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
+        for (int i = 1; i <= 5; ++i)
+        {
+            modelBuilder.Entity<Priority>().HasData(new Priority { Id = i,  Level = i });
+        }
+
         modelBuilder.Entity<ToDoItem>()
             .HasOne(td => td.User)
             .WithMany(u => u.TodoItems)
