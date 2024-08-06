@@ -27,7 +27,7 @@ namespace TestTC.Api.ApiControllers
         {
             try
             {
-                var toDoItems = await _toDoItemRepository.GetAll;
+                var toDoItems = await toDoItemRepository.GetAll;
                 if (toDoItems == null) return NotFound();
                 return Ok(toDoItems);
             }
@@ -49,7 +49,7 @@ namespace TestTC.Api.ApiControllers
         {
             try
             {
-                var toDoItem = await _toDoItemRepository.GetToDoItem(id);
+                var toDoItem = await toDoItemRepository.GetToDoItem(id);
 
                 if (toDoItem == null)
                 {
@@ -90,7 +90,7 @@ namespace TestTC.Api.ApiControllers
             }
             try
             {
-                await _toDoItemRepository.AddToDoItem(toDoItem);
+                await toDoItemRepository.AddToDoItem(toDoItem);
                 return CreatedAtAction(nameof(Get),
                     new
                     {
@@ -116,7 +116,7 @@ namespace TestTC.Api.ApiControllers
         {
             try
             {
-                var finishToDoItem = await _toDoItemRepository.GetToDoItem(id);
+                var finishToDoItem = await toDoItemRepository.GetToDoItem(id);
 
                 if (!ModelState.IsValid)
                 {
@@ -131,7 +131,7 @@ namespace TestTC.Api.ApiControllers
                 }
                 finishToDoItem.CopyFrom(toDoItem);
 
-                await _toDoItemRepository.EditToDoItem(finishToDoItem);
+                await toDoItemRepository.EditToDoItem(finishToDoItem);
                 return Ok(finishToDoItem);
             }
             catch (Exception ex)
@@ -152,7 +152,7 @@ namespace TestTC.Api.ApiControllers
         {
             try
             {
-                var toDoItem = await _toDoItemRepository.GetToDoItem(id);
+                var toDoItem = await toDoItemRepository.GetToDoItem(id);
 
                 if (toDoItem == null)
                 {
@@ -162,7 +162,7 @@ namespace TestTC.Api.ApiControllers
                     });
                 }
 
-                await _toDoItemRepository.RemoveToDoItem(toDoItem.Id);
+                await toDoItemRepository.RemoveToDoItem(toDoItem.Id);
                 return Ok(new
                 {
                     message = $"Задача с ID {id} успешно удалёна."
@@ -186,7 +186,7 @@ namespace TestTC.Api.ApiControllers
         {
             try
             {
-                var toDoItem = await _toDoItemRepository.GetToDoItem(id);
+                var toDoItem = await toDoItemRepository.GetToDoItem(id);
 
                 if (toDoItem == null)
                 {
@@ -196,7 +196,7 @@ namespace TestTC.Api.ApiControllers
                     });
                 }
                 toDoItem.IsCompleted = true;
-                await _toDoItemRepository.EditToDoItem(toDoItem);
+                await toDoItemRepository.EditToDoItem(toDoItem);
                 return Ok(toDoItem);
             }
             catch (Exception ex)
@@ -221,7 +221,7 @@ namespace TestTC.Api.ApiControllers
             }
             try
             {
-                var toDoItem = await _toDoItemRepository.GetToDoItem(id);
+                var toDoItem = await toDoItemRepository.GetToDoItem(id);
 
                 if (toDoItem == null)
                 {
@@ -239,7 +239,7 @@ namespace TestTC.Api.ApiControllers
                     });
                 }
 
-                var user = await _userRepository.GetUser(request.UserId);
+                var user = await userRepository.GetUser(request.UserId);
 
                 if (user == null)
                 {
@@ -250,7 +250,7 @@ namespace TestTC.Api.ApiControllers
                 }
 
                 toDoItem.UserId = user.Id;
-                await _toDoItemRepository.EditToDoItem(toDoItem);
+                await toDoItemRepository.EditToDoItem(toDoItem);
 
                 return Ok(toDoItem);
             }
