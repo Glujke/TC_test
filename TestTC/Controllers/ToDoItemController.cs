@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using TC.Models;
 using TC.Repository.Abstract;
 using TC.Repository.Entity;
@@ -232,6 +233,39 @@ namespace TC.Controllers {
                 return await ShowWithFilter((ToDoItems: res, Priorities: priorities));
             }
             catch (Exception ex)
+            {
+                logger.LogError(ex.Message);
+                var errorMessage = ex.InnerException?.Message ?? ex.Message;
+                return View("Error", new ErrorViewModel { RequestId = errorMessage });
+            }
+        }
+        public async Task<IActionResult> Remove(int id)
+        {
+            try
+            {
+                var toDoItem = await toDoItemRepository.GetToDoItem(id);
+                if (toDoItem == null)
+                {
+                    return NotFound();
+                }
+                return View(toDoItem);
+            }catch(Exception ex)
+            {
+                logger.LogError(ex.Message);
+                var errorMessage = ex.InnerException?.Message ?? ex.Message;
+                return View("Error", new ErrorViewModel { RequestId = errorMessage });
+            }
+        }      
+        
+        [HttpPost, ActionName("Remove")]
+        public async Task<IActionResult> RemoveConfirmed(int id)
+        {
+            try
+            {
+                var toDoItem = await toDoItemRepository.GetToDoItem(id);
+                await toDoItemRepository.RemoveToDoItem(id);
+                return RedirectToAction(nameof(ShowAll));
+            } catch(Exception ex)
             {
                 logger.LogError(ex.Message);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;

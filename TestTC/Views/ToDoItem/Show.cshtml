@@ -58,7 +58,8 @@
         @if (!Model.IsCompleted)
         {
             <a asp-action="FinishTask" asp-route-id="@Model.Id">Закрыть задачу</a>
-        }
+            }
+            <a asp-action="Remove" asp-route-id="@Model.Id">Удалить задачу</a> |
         <a asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a> |
         <a asp-action="ShowAll">Назад к списку</a>
     </div>
