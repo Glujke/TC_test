@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using NLog.Extensions.Logging;
+using Serilog;
 using System.Text.Json.Serialization;
 using TC.Repository.Abstract;
 using TC.Repository.Context;
@@ -8,18 +8,22 @@ using TC.Repository.Implementation;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Logging.AddNLog(@".\NLog\NLog.conf"));
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<TestTCDbContext>(options => options.UseSqlServer(connectionString));
 
-builder.Services.AddSwaggerGen(c =>
-{
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .CreateLogger();
+
+builder.Host.UseSerilog();
+
+builder.Services.AddSwaggerGen(c => {
     c.SwaggerDoc("v1",
-        new OpenApiInfo
-        {
-            Title = "Test_TC API", Version = "v1"
-        });
+    new OpenApiInfo
+    {
+        Title = "Test_TC API", Version = "v1"
+    });
 });
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -42,7 +46,8 @@ app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Test_TC A
 
 app.UseRouting();
 
+
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+name: "default",
+pattern: "{controller=Home}/{action=Index}/{id?}");
 app.Run();

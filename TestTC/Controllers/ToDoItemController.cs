@@ -6,10 +6,8 @@ using TC.Repository.Entity;
 using TestTC.Repository.Enums;
 using TestTC.Repository.Filters;
 
-namespace TC.Controllers
-{
-    public class ToDoItemController : Controller
-    {
+namespace TC.Controllers {
+    public class ToDoItemController : Controller {
         private readonly IToDoItemRepository toDoItemRepository;
         private readonly IUserRepository userRepository;
         private readonly IPriorityRepository priorityRepository;
@@ -37,8 +35,6 @@ namespace TC.Controllers
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);
-                logger.LogError(ex.InnerException?.Message);
-                logger.LogError(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
                 return View("Error", new ErrorViewModel { RequestId = errorMessage });
             }
@@ -73,8 +69,6 @@ namespace TC.Controllers
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);
-                logger.LogError(ex.InnerException?.Message);
-                logger.LogError(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
                 return View("Error", new ErrorViewModel { RequestId = errorMessage });
             }
@@ -94,8 +88,6 @@ namespace TC.Controllers
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);
-                logger.LogError(ex.InnerException?.Message);
-                logger.LogError(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
                 return View("Error", new ErrorViewModel { RequestId = errorMessage });
             }
@@ -135,8 +127,6 @@ namespace TC.Controllers
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);
-                logger.LogError(ex.InnerException?.Message);
-                logger.LogError(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
                 return View("Error", new ErrorViewModel { RequestId = errorMessage });
             }
@@ -154,8 +144,6 @@ namespace TC.Controllers
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);
-                logger.LogError(ex.InnerException?.Message);
-                logger.LogError(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
                 return View("Error", new ErrorViewModel { RequestId = errorMessage });
             }
@@ -170,16 +158,14 @@ namespace TC.Controllers
                 await toDoItemRepository.EditToDoItem(toDoItem);
 
                 return RedirectToAction("Show",
-                    new
-                    {
-                        id = id
-                    });
+                new
+                {
+                    id = id
+                });
             }
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);
-                logger.LogError(ex.InnerException?.Message);
-                logger.LogError(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
                 return View("Error", new ErrorViewModel { RequestId = errorMessage });
             }
@@ -190,41 +176,11 @@ namespace TC.Controllers
         {
             try
             {
-                if (id != toDoItem.Id)
-                {
-                    ModelState.AddModelError("", "ID не совпадает.");
-                    return View(toDoItem);
-                }
-                if (!ModelState.IsValid)
-                {
-                    ModelState.AddModelError("", "Не все данные заполнены");
-                    var users = await userRepository.GetAll;
-                    var priorities = await priorityRepository.GetAll;
-                    ViewData["UserId"] = new SelectList(users, "Id", "Name");
-                    ViewData["PriorityId"] = new SelectList(priorities, "Id", "Level");
-                    return View(toDoItem);
-                }
-                if (toDoItem.DueDate < DateTime.Now)
-                {
-                    ModelState.AddModelError("", "Дата выполнения не может быть раньше текущей.");
-                    var users = await userRepository.GetAll;
-                    var priorities = await priorityRepository.GetAll;
-                    ViewData["UserId"] = new SelectList(users, "Id", "Name");
-                    ViewData["PriorityId"] = new SelectList(priorities, "Id", "Level");
-                    return View(toDoItem);
-                }
-                await toDoItemRepository.EditToDoItem(toDoItem);
-                return RedirectToAction("Show",
-                    new
-                    {
-                        id = id
-                    });
+                return await Edit(id, toDoItem);
             }
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);
-                logger.LogError(ex.InnerException?.Message);
-                logger.LogError(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
                 return View("Error", new ErrorViewModel { RequestId = errorMessage });
             }
@@ -242,8 +198,6 @@ namespace TC.Controllers
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);
-                logger.LogError(ex.InnerException?.Message);
-                logger.LogError(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
                 return View("Error", new ErrorViewModel { RequestId = errorMessage });
             }
@@ -260,8 +214,6 @@ namespace TC.Controllers
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);
-                logger.LogError(ex.InnerException?.Message);
-                logger.LogError(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
                 return View("Error", new ErrorViewModel { RequestId = errorMessage });
             }
@@ -282,8 +234,6 @@ namespace TC.Controllers
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);
-                logger.LogError(ex.InnerException?.Message);
-                logger.LogError(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
                 return View("Error", new ErrorViewModel { RequestId = errorMessage });
             }

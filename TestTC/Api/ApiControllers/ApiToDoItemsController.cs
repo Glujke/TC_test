@@ -4,12 +4,10 @@ using TC.Repository.Abstract;
 using TC.Repository.Entity;
 using TestTC.Api.Requests;
 
-namespace TestTC.Api.ApiControllers
-{
+namespace TestTC.Api.ApiControllers {
     [Route("api/[controller]")]
     [ApiController]
-    public class ApiToDoItemController : ControllerBase
-    {
+    public class ApiToDoItemController : ControllerBase {
         private readonly IToDoItemRepository toDoItemRepository;
         private readonly IUserRepository userRepository;
         private readonly IPriorityRepository priorityRepository;
@@ -36,8 +34,6 @@ namespace TestTC.Api.ApiControllers
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);
-                logger.LogError(ex.InnerException?.Message);
-                logger.LogError(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
                 return BadRequest(new { message = errorMessage });
             }
@@ -60,8 +56,6 @@ namespace TestTC.Api.ApiControllers
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);
-                logger.LogError(ex.InnerException?.Message);
-                logger.LogError(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
                 return BadRequest(new { message = errorMessage });
             }
@@ -86,8 +80,6 @@ namespace TestTC.Api.ApiControllers
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);
-                logger.LogError(ex.InnerException?.Message);
-                logger.LogError(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
                 return BadRequest(new { message = errorMessage });
             }
@@ -116,8 +108,6 @@ namespace TestTC.Api.ApiControllers
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);
-                logger.LogError(ex.InnerException?.Message);
-                logger.LogError(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
                 return BadRequest(new { message = errorMessage });
             }
@@ -141,8 +131,6 @@ namespace TestTC.Api.ApiControllers
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);
-                logger.LogError(ex.InnerException?.Message);
-                logger.LogError(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
                 return BadRequest(new { message = errorMessage });
             }
@@ -166,8 +154,6 @@ namespace TestTC.Api.ApiControllers
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);
-                logger.LogError(ex.InnerException?.Message);
-                logger.LogError(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
                 return BadRequest(new { message = errorMessage });
             }
@@ -208,8 +194,6 @@ namespace TestTC.Api.ApiControllers
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);
-                logger.LogError(ex.InnerException?.Message);
-                logger.LogError(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
                 return BadRequest(new { message = errorMessage });
             }

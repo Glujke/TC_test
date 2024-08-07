@@ -4,10 +4,8 @@ using TC.Models;
 using TC.Repository.Abstract;
 using TC.Repository.Entity;
 
-namespace TC.Controllers
-{
-    public class PriorityController : Controller
-    {
+namespace TC.Controllers {
+    public class PriorityController : Controller {
         private readonly IPriorityRepository priorityRepository;
         private readonly ILogger<PriorityController> logger;
 
@@ -27,8 +25,6 @@ namespace TC.Controllers
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);
-                logger.LogError(ex.InnerException?.Message);
-                logger.LogError(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
                 return View("Error", new ErrorViewModel { RequestId = errorMessage });
             }
@@ -50,8 +46,6 @@ namespace TC.Controllers
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);
-                logger.LogError(ex.InnerException?.Message);
-                logger.LogError(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
                 return View("Error", new ErrorViewModel { RequestId = errorMessage });
             }
@@ -68,8 +62,6 @@ namespace TC.Controllers
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);
-                logger.LogError(ex.InnerException?.Message);
-                logger.LogError(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
                 return View("Error", new ErrorViewModel { RequestId = errorMessage });
             }
@@ -96,8 +88,6 @@ namespace TC.Controllers
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);
-                logger.LogError(ex.InnerException?.Message);
-                logger.LogError(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
                 return View("Error", new ErrorViewModel { RequestId = errorMessage });
             }
@@ -114,8 +104,6 @@ namespace TC.Controllers
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);
-                logger.LogError(ex.InnerException?.Message);
-                logger.LogError(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
                 return View("Error", new ErrorViewModel { RequestId = errorMessage });
             }
@@ -132,8 +120,6 @@ namespace TC.Controllers
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);
-                logger.LogError(ex.InnerException?.Message);
-                logger.LogError(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
                 return View("Error", new ErrorViewModel { RequestId = errorMessage });
             }
@@ -150,8 +136,6 @@ namespace TC.Controllers
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);
-                logger.LogError(ex.InnerException?.Message);
-                logger.LogError(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
                 return View("Error", new ErrorViewModel { RequestId = errorMessage });
             }
@@ -167,8 +151,6 @@ namespace TC.Controllers
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);
-                logger.LogError(ex.InnerException?.Message);
-                logger.LogError(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
                 return View("Error", new ErrorViewModel { RequestId = errorMessage });
             }

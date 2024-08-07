@@ -2,12 +2,10 @@
 using TC.Repository.Abstract;
 using TC.Repository.Entity;
 
-namespace TestTC.Api.ApiControllers
-{
+namespace TestTC.Api.ApiControllers {
     [Route("api/[controller]")]
     [ApiController]
-    public class ApiUserController : ControllerBase
-    {
+    public class ApiUserController : ControllerBase {
         private readonly IUserRepository userRepository;
         private readonly ILogger<ApiUserController> logger;
 
@@ -31,8 +29,6 @@ namespace TestTC.Api.ApiControllers
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);
-                logger.LogError(ex.InnerException?.Message);
-                logger.LogError(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
                 return BadRequest(new { message = errorMessage });
             }
@@ -53,8 +49,6 @@ namespace TestTC.Api.ApiControllers
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);
-                logger.LogError(ex.InnerException?.Message);
-                logger.LogError(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
                 return BadRequest(new { message = errorMessage });
             }
@@ -68,14 +62,12 @@ namespace TestTC.Api.ApiControllers
             {
                 await userRepository.AddUser(user);
                 return CreatedAtAction(nameof(GetUser),
-                    new { id = user.Id },
-                    user);
+                new { id = user.Id },
+                user);
             }
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);
-                logger.LogError(ex.InnerException?.Message);
-                logger.LogError(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
                 return BadRequest(new { message = errorMessage });
             }
@@ -95,14 +87,12 @@ namespace TestTC.Api.ApiControllers
                 await userRepository.EditUser(existingUser);
 
                 return CreatedAtAction(nameof(GetUser),
-                    new { id = user.Id },
-                    user);
+                new { id = user.Id },
+                user);
             }
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);
-                logger.LogError(ex.InnerException?.Message);
-                logger.LogError(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
                 return BadRequest(new { message = errorMessage });
             }
@@ -124,8 +114,6 @@ namespace TestTC.Api.ApiControllers
             catch (Exception ex)
             {
                 logger.LogError(ex.Message);
-                logger.LogError(ex.InnerException?.Message);
-                logger.LogError(ex.StackTrace);
                 var errorMessage = ex.InnerException?.Message ?? ex.Message;
                 return BadRequest(new { message = errorMessage });
             }
